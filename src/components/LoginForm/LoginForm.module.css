@@ -1,0 +1,30 @@
+.background {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('/src/assets/images/bg-login.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.wrapper-filter {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.62);
+  z-index: 1;
+}
+
+.logo-vmo {
+  width: 180px;
+}
+
+.logo-google {
+  width: 40px;
+}
