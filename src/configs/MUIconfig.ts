@@ -10,6 +10,11 @@ export const theme = createTheme({
   },
   // Config typography
   typography: {
+    h2: {
+      fontSize: '3.2rem',
+      lineHeight: '3.6rem',
+      fontWeight: 800
+    },
     h3: {
       fontSize: '2.8rem',
       lineHeight: '3.2rem',
@@ -29,6 +34,15 @@ export const theme = createTheme({
       fontSize: '1.6rem',
       lineHeight: '2rem',
       fontWeight: 400
+    }
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none'
+        }
+      }
     }
   }
 })
