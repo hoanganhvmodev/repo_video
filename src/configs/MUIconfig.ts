@@ -6,6 +6,10 @@ export const theme = createTheme({
     primary: {
       main: '#FF9F1C',
       light: 'rgba(255,159,28, 0.65)'
+    },
+    secondary: {
+      main: '#FFFFFF',
+      light: 'rgba(255,159,28, 0.65)'
     }
   },
   // Config typography
