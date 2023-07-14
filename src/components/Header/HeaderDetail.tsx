@@ -127,7 +127,9 @@ export default function Header() {
               />
             </Link>
           </Box>
-          <Box sx={{ fontSize: '22px' }}>{'Learning Reactjs (PRO)' || ''}</Box>
+          <Box sx={{ fontSize: '22px', color: 'white' }}>
+            {'Learning Reactjs (PRO)' || ''}
+          </Box>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <Box
@@ -135,7 +137,8 @@ export default function Header() {
                 mr: 5,
                 fontSize: '16px',
                 display: 'flex',
-                alignItems: 'center'
+                alignItems: 'center',
+                color: 'white'
               }}
             >
               {'50/100 video da xem'}
@@ -146,7 +149,9 @@ export default function Header() {
               color='inherit'
             >
               <NoteRoundedIcon sx={{ color: '#CCCCCC' }} />
-              <Box sx={{ fontSize: '16px', ml: 1 }}>Ghi chú</Box>
+              <Box sx={{ fontSize: '16px', ml: 1, color: 'white' }}>
+                Ghi chú
+              </Box>
             </IconButton>
             <IconButton
               aria-controls={menuId}
