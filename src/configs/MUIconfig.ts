@@ -15,28 +15,28 @@ export const theme = createTheme({
   // Config typography
   typography: {
     h2: {
-      fontSize: '3.2rem',
-      lineHeight: '3.6rem',
+      fontSize: '32px',
+      lineHeight: '36px',
       fontWeight: 800
     },
     h3: {
-      fontSize: '2.8rem',
-      lineHeight: '3.2rem',
+      fontSize: '28px',
+      lineHeight: '32px',
       fontWeight: 700
     },
     h4: {
-      fontSize: '2.4rem',
-      lineHeight: '2.8rem',
+      fontSize: '24px',
+      lineHeight: '28px',
       fontWeight: 600
     },
     h5: {
-      fontSize: '2rem',
-      lineHeight: '2.4rem',
+      fontSize: '20px',
+      lineHeight: '24px',
       fontWeight: 500
     },
     body1: {
-      fontSize: '1.6rem',
-      lineHeight: '2rem',
+      fontSize: '16px',
+      lineHeight: '20px',
       fontWeight: 400
     }
   },
@@ -44,7 +44,29 @@ export const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'none'
+          textTransform: 'none',
+          '&.MuiButton-containedPrimary:hover': {
+            backgroundColor: '#ffb44e', 
+          },
+  
+        }
+      }
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          fontSize: '20px',
+          fontWeight: 'bold',
+          lineHeight: '24px',
+          color: '#000000'
+        }
+      }
+    },
+    MuiDialogContentText: {
+      styleOverrides: {
+        root: {
+          fontSize: '16px',
+          lineHeight: '24px'
         }
       }
     }

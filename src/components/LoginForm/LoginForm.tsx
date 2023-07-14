@@ -14,16 +14,6 @@ const LoginForm: FC = () => {
       const token = tokenResponse.access_token || ''
       console.log(tokenResponse)
 
-      const response = await fetch(
-        `https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${token}`
-      )
-      const data = await response.json()
-      const idToken = data.id_token || ''
-
-      console.log('id_token:', data)
-
-      console.log('access_token:', token)
-
       await loginWithGoogle(token as string)
     }
   })
@@ -40,7 +30,7 @@ const LoginForm: FC = () => {
         </Box>
 
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
-          {/* <Button
+          <Button
             sx={{ boxShadow: 4, px: 7, borderRadius: '0px' }}
             onClick={() => {
               login()
@@ -54,17 +44,7 @@ const LoginForm: FC = () => {
             <Typography variant='h5' color='initial'>
               Đăng nhập với Google
             </Typography>
-          </Button> */}
-          <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              console.log(credentialResponse)
-            }}
-            onError={() => {
-              console.log('Login Failed')
-            }}
-            size='large'
-            width='700px'
-          />
+          </Button>
         </Box>
       </Paper>
     </div>
