@@ -48,7 +48,6 @@ export const theme = createTheme({
           '&.MuiButton-containedPrimary:hover': {
             backgroundColor: '#ffb44e', 
           },
-  
         }
       }
     },
