@@ -45,6 +45,9 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
+          '&.MuiButton-containedPrimary': {
+            color: '#ffffff', 
+          },
           '&.MuiButton-containedPrimary:hover': {
             backgroundColor: '#ffb44e', 
           },

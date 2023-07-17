@@ -1,7 +1,7 @@
 export enum Level {
-  EASY = 1,
-  IMMEDIATE = 2,
-  ADVANCE = 3
+  EASY = 'easy',
+  IMMEDIATE = 'immediate',
+  ADVANCE = 'advance'
 }
 
 export interface ILevel {
@@ -9,16 +9,11 @@ export interface ILevel {
   label: string
 }
 
-export interface Tag {
-  id: number
-  content: string
-}
-
 export interface DataFormCourse {
   id: number | null
   name: string
-  thumb: string
-  level: Level
+  thumbnail: string
+  level: string
   isSequence: boolean
   tags: string[]
   description: string

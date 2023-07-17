@@ -25,17 +25,15 @@ const CInputTags: FC<CInputTagsProps> = ({
 
   useEffect(() => {
     setSelectedItem(tags)
-  }, [tags])
+  }, [])
 
   useEffect(() => {
     selectedTags(selectedItem)
-  }, [selectedItem, selectedTags])
+  }, [selectedItem])
 
   function handleAddTags(value: string) {
     const newSelectedItem = [...selectedItem]
-    const duplicatedValues = newSelectedItem.indexOf(
-      value.trim()
-    )
+    const duplicatedValues = newSelectedItem.indexOf(value.trim())
 
     if (duplicatedValues !== -1) {
       setInputValue('')
@@ -105,6 +103,8 @@ const CInputTags: FC<CInputTagsProps> = ({
                   width: '100%'
                 }}
                 helperText={hint}
+                multiline
+                maxRows={3}
                 InputProps={{
                   startAdornment: selectedItem.map((item) => (
                     <Chip
