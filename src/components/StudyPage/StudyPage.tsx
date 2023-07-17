@@ -16,13 +16,17 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  FormControl
+  FormControl,
+  DialogContentText,
+  DialogProps
 } from '@mui/material'
 import Header from '../Header/HeaderDetail'
 import styles from './StudyPage.module.css'
 import DoneIcon from '@mui/icons-material/Done'
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined'
 import AddIcon from '@mui/icons-material/Add'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+
 interface Course {
   name: string
   chapters: string[]
@@ -77,6 +81,135 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
   const handleNoteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNote(event.target.value)
   }
+  const fakeComments = [
+    {
+      id: 1,
+      author: 'Tô Tiến Toàn',
+      avatar:
+        'https://lh3.googleusercontent.com/a-/AD_cMMRRJ4zInHZfaINaSUaBgvCnuitVykCZYkCEwLseRtcelA=s272-p-k-rw-no',
+      timestamp: '2023-07-17 16:38',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+    },
+    {
+      id: 2,
+      author: 'Hoàng Anh',
+      avatar:
+        'https://lh3.googleusercontent.com/a-/AD_cMMRcL6FJ_2SNH-IQkgO_73gcRGvz4BuEaADEQ3K8T5DGXw=s272-p-k-rw-no',
+      timestamp: '2023-07-17 16:40',
+      content:
+        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+    },
+    {
+      id: 3,
+      author: 'Tuấn Đá',
+      avatar:
+        'https://lh3.googleusercontent.com/a-/AD_cMMQbjXSTFPX46zEaVJKukH1cgy_D_qsfF4c3xRxXGznzAQ=s272-p-k-rw-no',
+      timestamp: '2023-07-17 16:40',
+      content:
+        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+    },
+    {
+      id: 4,
+      author: 'Lê Minh Hải',
+      avatar:
+        'https://lh3.googleusercontent.com/a/AAcHTtd1ItEZFMOvH4QspPkMUiSBkoJeVvgLz35U7HB7YGBn=s272-p-k-rw-no-mo',
+      timestamp: '2023-07-17 16:40',
+      content:
+        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+    },
+    {
+      id: 5,
+      author: 'Linh dm',
+      avatar:
+        'https://lh3.googleusercontent.com/a-/AD_cMMSqLU_kTPSHvhK2dq52T59laU_mGGiaDvgi0ltpdbwdMQ=s272-p-k-rw-no',
+      timestamp: '2023-07-17 16:40',
+      content:
+        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+    },
+    {
+      id: 6,
+      author: 'Sáng DT',
+      avatar:
+        'https://lh3.googleusercontent.com/a-/AD_cMMS1xcRmH_AtVBeOur_SChs9reNCvJQrSOQpoihi5WE0kg=s272-p-k-rw-no',
+      timestamp: '2023-07-17 16:40',
+      content:
+        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+    },
+    {
+      id: 7,
+      author: 'Linh dm',
+      avatar:
+        'https://lh3.googleusercontent.com/a-/AD_cMMSqLU_kTPSHvhK2dq52T59laU_mGGiaDvgi0ltpdbwdMQ=s272-p-k-rw-no',
+      timestamp: '2023-07-17 16:40',
+      content:
+        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+    },
+    {
+      id: 8,
+      author: 'Linh dm',
+      avatar:
+        'https://lh3.googleusercontent.com/a-/AD_cMMSqLU_kTPSHvhK2dq52T59laU_mGGiaDvgi0ltpdbwdMQ=s272-p-k-rw-no',
+      timestamp: '2023-07-17 16:40',
+      content:
+        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+    },
+    {
+      id: 9,
+      author: 'Linh dm',
+      avatar:
+        'https://lh3.googleusercontent.com/a-/AD_cMMSqLU_kTPSHvhK2dq52T59laU_mGGiaDvgi0ltpdbwdMQ=s272-p-k-rw-no',
+      timestamp: '2023-07-17 16:40',
+      content:
+        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+    }
+    // Add more fake comments as needed
+  ]
+
+  const [open, setOpen] = React.useState(false)
+  const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper')
+  const [comments, setComments] = React.useState(fakeComments)
+  const [commentText, setCommentText] = React.useState('')
+  const [showAllComments, setShowAllComments] = React.useState(false)
+
+  const handleClickOpen = (scrollType: DialogProps['scroll']) => () => {
+    setOpen(true)
+    setScroll(scrollType)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCommentText(event.target.value)
+  }
+
+  const handleCommentSubmit = () => {
+    const newComment = {
+      id: comments.length + 1,
+      author: 'New User',
+      avatar: 'https://example.com/avatar3.png', // Placeholder for new comment's avatar
+      timestamp: new Date().toLocaleString(),
+      content: commentText
+    }
+
+    setComments([...comments, newComment])
+    setCommentText('')
+  }
+
+  const handleShowAllComments = () => {
+    setShowAllComments(true)
+  }
+
+  const descriptionElementRef = React.useRef<HTMLElement>(null)
+  React.useEffect(() => {
+    if (open) {
+      const { current: descriptionElement } = descriptionElementRef
+      if (descriptionElement !== null) {
+        descriptionElement.focus()
+      }
+    }
+  }, [open])
 
   return (
     <Box>
@@ -155,6 +288,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
           <Button
             size='large'
             variant='outlined'
+            onClick={handleClickOpen('paper')}
             sx={{
               position: 'fixed',
               bottom: '66px',
@@ -166,6 +300,109 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
             <ChatOutlinedIcon color='primary' sx={{ mr: 1 }}></ChatOutlinedIcon>
             Hỏi đáp
           </Button>
+          <Dialog
+            open={open}
+            className={styles['scrollBar']}
+            onClose={handleClose}
+            scroll={scroll}
+            aria-labelledby='scroll-dialog-title'
+            aria-describedby='scroll-dialog-description'
+            maxWidth='lg'
+            PaperProps={{
+              style: {
+                width: '43%',
+                minWidth: '300px',
+                height: '100vh',
+                maxHeight: '100vh',
+                position: 'absolute',
+                top: -32,
+                right: -30
+              }
+            }}
+          >
+            <DialogTitle id='scroll-dialog-title'>Comments</DialogTitle>
+            <DialogContent dividers>
+              <DialogContentText
+                id='scroll-dialog-description'
+                ref={descriptionElementRef}
+                tabIndex={-1}
+              >
+                <Box
+                  className={styles['scrollBar']}
+                  sx={{
+                    width: '100%',
+                    minWidth: '300px',
+                    overflowY: 'auto',
+                    height: 'calc(90vh)'
+                  }}
+                >
+                  <TextField
+                    label='Bạn có thắc mắc gì trong bài học này?'
+                    variant='standard'
+                    margin='normal'
+                    fullWidth
+                    value={commentText}
+                    onChange={handleCommentChange}
+                  />
+                  <Button onClick={handleClose}>Hủy</Button>
+                  <Button onClick={handleCommentSubmit}>Gửi</Button>
+                  <Box>
+                    {comments
+                      .slice(0, showAllComments ? comments.length : 5)
+                      .map((comment) => (
+                        <Box
+                          key={comment.id}
+                          display='flex'
+                          alignItems='center'
+                          mt={5}
+                        >
+                          <img
+                            src={comment.avatar}
+                            alt='Avatar'
+                            style={{
+                              width: '60px',
+                              height: '60px',
+                              borderRadius: '50%'
+                            }}
+                          />
+                          <Box
+                            ml={3}
+                            sx={{
+                              backgroundColor: '#E9ECEE',
+                              borderRadius: 3,
+                              p: 2
+                            }}
+                          >
+                            <Typography variant='body1'>
+                              {comment.content}
+                            </Typography>
+                            <Typography variant='caption' color='textSecondary'>
+                              {comment.timestamp}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      ))}
+                    {comments.length > 5 && !showAllComments && (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          mt: 4
+                        }}
+                      >
+                        <Button onClick={handleShowAllComments}>
+                          <KeyboardArrowUpIcon
+                            sx={{ transform: 'rotate(180deg)' }}
+                          ></KeyboardArrowUpIcon>
+                          Xem thêm
+                        </Button>
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+              </DialogContentText>
+            </DialogContent>
+          </Dialog>
         </Box>
       </Box>
 
