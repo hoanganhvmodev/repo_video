@@ -12,3 +12,13 @@ body {
   font-size: 16px;
   line-height: 20px;
 }
+
+
+/* Fix CSS : Select tags */
+.MuiInputBase-adornedStart {
+  flex-wrap: wrap;
+}
+
+.MuiInputBase-inputAdornedStart {
+  flex: 1;
+}

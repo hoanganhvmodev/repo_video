@@ -3,10 +3,10 @@ import React from 'react'
 
 interface CLazySelectProps<T> {
   items: T[]
-  open: boolean
-  isLoading: boolean
-  onOpen: () => void
-  onClose: () => void
+  open?: boolean
+  isLoading?: boolean
+  onOpen?: () => void
+  onClose?: () => void
   onChange?: (e: React.SyntheticEvent<Element, Event>, value: any) => void
 }
 
@@ -20,10 +20,14 @@ export default function CLazySelect<T extends { id: number; name: string }>(
         sx={{ width: 300 }}
         open={open}
         onOpen={() => {
-          onOpen()
+          if (onOpen) {
+            onOpen()
+          }
         }}
         onClose={() => {
-          onClose()
+          if (onClose) {
+            onClose()
+          }
         }}
         isOptionEqualToValue={(option, value) => option.id === value.id}
         getOptionLabel={(option: T) => option.name}
@@ -32,6 +36,7 @@ export default function CLazySelect<T extends { id: number; name: string }>(
         onChange={onChange}
         renderInput={(params) => (
           <TextField
+            key={params.id}
             {...params}
             variant='standard'
             label='Asynchronous'

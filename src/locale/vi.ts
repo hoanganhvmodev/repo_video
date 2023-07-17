@@ -5,8 +5,12 @@ const translation = {
   en: 'Tiếng Anh',
   commonForm: {
     close: 'Đóng',
+    create: 'Tạo',
     yes: 'Có',
     no: 'Không'
+  },
+  validatedMessage: {
+    notEmpty: 'Thông tin này không được để trống'
   },
   createCourse: {
     title: 'Thêm khóa học',

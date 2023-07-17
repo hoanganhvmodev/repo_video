@@ -1,24 +1,27 @@
-import { FC, ChangeEvent, useRef, useState } from 'react'
-import { Box, TextField, useTheme, Button, InputLabel } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 import ImageIcon from '@mui/icons-material/Image'
+import { Box, Button, InputLabel } from '@mui/material'
+import { ChangeEvent, FC, useRef } from 'react'
 interface CUploadImageProps {
   label: string
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
   error: any
   sxContainer?: object
+  attachment: any
+  handleSelectFile?: (e: ChangeEvent<HTMLInputElement>) => any
+  handleCloseSelectFile?: () => any
 }
 
 const CUploadImage: FC<CUploadImageProps> = ({
   label,
-  onChange,
   error,
-  sxContainer
+  sxContainer,
+  attachment,
+  handleSelectFile,
+  handleCloseSelectFile
 }) => {
   const ref = useRef<HTMLInputElement>(null)
-  const theme = useTheme()
-  const [attachment, setAttachment] = useState<any>(null)
 
-  return (
+  return !(attachment && attachment?.url) ? (
     <Box
       position='relative'
       sx={{
@@ -60,8 +63,48 @@ const CUploadImage: FC<CUploadImageProps> = ({
           type='file'
           accept='.png, .jpg, .jpeg'
           hidden
-          onChange={onChange}
+          onChange={handleSelectFile}
         />
+      </Button>
+    </Box>
+  ) : (
+    <Box
+      position='relative'
+      sx={{
+        ...sxContainer,
+        background: '#F5F5F5',
+        borderRadius: '12px'
+      }}
+    >
+      <img
+        src={attachment?.url}
+        alt='thumbnail'
+        style={{
+          width: '100%',
+          height: '100%',
+          borderRadius: '12px',
+          objectFit: 'cover',
+          objectPosition: 'center'
+        }}
+      />
+      <Button
+        sx={{
+          position: 'absolute',
+          top: 1,
+          right: 1,
+          width: '32px',
+          height: '32px',
+          minWidth: '32px',
+          padding: 0,
+          borderRadius: '9999px'
+        }}
+        onClick={() => {
+          if (handleCloseSelectFile) {
+            handleCloseSelectFile()
+          }
+        }}
+      >
+        <CloseIcon sx={{ color: 'white' }} />
       </Button>
     </Box>
   )

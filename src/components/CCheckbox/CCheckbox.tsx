@@ -1,4 +1,5 @@
 import { Checkbox, InputLabel } from '@mui/material'
+import { ChangeEvent } from 'react'
 
 interface CCheckboxProps<T> {
   item?: T
@@ -6,7 +7,7 @@ interface CCheckboxProps<T> {
   label: string
   id?: string
   sxCheckBoxCustom?: object
-  onChange: (item?: T) => void
+  onChange: (e: ChangeEvent<HTMLInputElement> , item?: T) => void
 }
 
 export default function CCheckbox<T>(props: CCheckboxProps<T>) {
@@ -16,7 +17,7 @@ export default function CCheckbox<T>(props: CCheckboxProps<T>) {
       <Checkbox
         checked={value}
         onChange={(e) => {
-          onChange(item)
+          onChange(e, item)
         }}
         sx={{ ...sxCheckBoxCustom }}
       />

@@ -7,7 +7,9 @@ interface CFormProps {
   styleCustom?: object
   sxCustomTitle?: object
   inputArea?: ReactNode
+  actionPosition?: 'start' | 'center' | 'end'
   actionArea?: ReactNode
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
 }
 
 const CForm: FC<CFormProps> = ({
@@ -16,10 +18,12 @@ const CForm: FC<CFormProps> = ({
   title,
   sxCustomTitle,
   inputArea,
-  actionArea
+  actionPosition = 'end',
+  actionArea,
+  onSubmit
 }) => {
   return (
-    <>
+    <form onSubmit={onSubmit}>
       <Box
         sx={{
           minWidth: '600px',
@@ -36,9 +40,13 @@ const CForm: FC<CFormProps> = ({
           {title}
         </Typography>
         {inputArea}
-        <Box>{actionArea}</Box>
+        <Box sx={{marginTop: 3}}>
+          <Box sx={{ display: 'flex', justifyContent: actionPosition, gap: 2 }}>
+            {actionArea}
+          </Box>
+        </Box>
       </Box>
-    </>
+    </form>
   )
 }
 

@@ -13,7 +13,6 @@
     "prettier:fix": "prettier --write \"src/**/(*.tsx|*.ts|*.css|*.scss)\""
   },
   "dependencies": {
-    "downshift": "3.2.10",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.5",
@@ -21,10 +20,12 @@
     "@mui/material": "^5.13.7",
     "@react-oauth/google": "^0.11.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "downshift": "3.2.10",
     "i18next": "^23.2.10",
     "mui-image": "^1.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.45.1",
     "react-i18next": "^13.0.2",
     "react-redux": "^8.1.0",
     "react-router-dom": "^6.12.1",
