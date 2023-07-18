@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Box,
   Grid,
@@ -107,7 +107,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
       avatar:
         'https://lh3.googleusercontent.com/a-/AD_cMMRRJ4zInHZfaINaSUaBgvCnuitVykCZYkCEwLseRtcelA=s272-p-k-rw-no',
       timestamp: '2023-07-17 16:38',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+      content: 'Thả tim.'
     },
     {
       id: 2,
@@ -115,8 +115,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
       avatar:
         'https://lh3.googleusercontent.com/a-/AD_cMMRcL6FJ_2SNH-IQkgO_73gcRGvz4BuEaADEQ3K8T5DGXw=s272-p-k-rw-no',
       timestamp: '2023-07-17 16:40',
-      content:
-        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+      content: 'Hay quá.'
     },
     {
       id: 3,
@@ -124,8 +123,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
       avatar:
         'https://lh3.googleusercontent.com/a-/AD_cMMQbjXSTFPX46zEaVJKukH1cgy_D_qsfF4c3xRxXGznzAQ=s272-p-k-rw-no',
       timestamp: '2023-07-17 16:40',
-      content:
-        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+      content: 'Vip xì lip.'
     },
     {
       id: 4,
@@ -134,7 +132,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
         'https://lh3.googleusercontent.com/a/AAcHTtd1ItEZFMOvH4QspPkMUiSBkoJeVvgLz35U7HB7YGBn=s272-p-k-rw-no-mo',
       timestamp: '2023-07-17 16:40',
       content:
-        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestasPellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
     },
     {
       id: 5,
@@ -151,8 +149,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
       avatar:
         'https://lh3.googleusercontent.com/a-/AD_cMMS1xcRmH_AtVBeOur_SChs9reNCvJQrSOQpoihi5WE0kg=s272-p-k-rw-no',
       timestamp: '2023-07-17 16:40',
-      content:
-        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+      content: 'Chị Linh spam.'
     },
     {
       id: 7,
@@ -160,8 +157,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
       avatar:
         'https://lh3.googleusercontent.com/a-/AD_cMMSqLU_kTPSHvhK2dq52T59laU_mGGiaDvgi0ltpdbwdMQ=s272-p-k-rw-no',
       timestamp: '2023-07-17 16:40',
-      content:
-        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+      content: 'Thầy giáo đẹp trai quá.'
     },
     {
       id: 8,
@@ -169,8 +165,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
       avatar:
         'https://lh3.googleusercontent.com/a-/AD_cMMSqLU_kTPSHvhK2dq52T59laU_mGGiaDvgi0ltpdbwdMQ=s272-p-k-rw-no',
       timestamp: '2023-07-17 16:40',
-      content:
-        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+      content: '<3 <3.'
     },
     {
       id: 9,
@@ -178,8 +173,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
       avatar:
         'https://lh3.googleusercontent.com/a-/AD_cMMSqLU_kTPSHvhK2dq52T59laU_mGGiaDvgi0ltpdbwdMQ=s272-p-k-rw-no',
       timestamp: '2023-07-17 16:40',
-      content:
-        'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'
+      content: 'Yêu Toàn.'
     }
     // Add more fake comments as needed
   ]
@@ -263,7 +257,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
         </Box>
         <Box>
           <Button
-            sx={{ mt: 4, mr: 10, backgroundColor: '#EBEBEB' }}
+            sx={{ mt: 4, mr: 10, backgroundColor: 'primary' }}
             variant='contained'
             onClick={handleOpenNoteDialog}
           >
@@ -504,6 +498,7 @@ const App: React.FC = () => {
     }
   ]
   const [selectedCourse, setSelectedCourse] = useState<number | null>(null)
+
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null)
 
   // Lưu trạng thái hiện/ẩn của từng khóa học
@@ -511,18 +506,29 @@ const App: React.FC = () => {
     [key: number]: boolean
   }>({})
 
+  const [isPageLoaded, setIsPageLoaded] = useState(false)
+  useEffect(() => {
+    // Xác định trang đã được load lại
+    setIsPageLoaded(true)
+  }, [])
+
+  useEffect(() => {
+    // Nếu trang đã load lại và chưa có khóa học hoặc chương học được chọn thì thiết lập giá trị mặc định
+    if (isPageLoaded && (selectedCourse === null || selectedChapter === null)) {
+      setSelectedCourse(0) // Giá trị mặc định: 0 (course đầu tiên)
+      setSelectedChapter(0) // Giá trị mặc định: 0 (chapter đầu tiên của course đầu tiên)
+    }
+  }, [isPageLoaded, selectedCourse, selectedChapter])
+
   const handleSelectCourse = (courseIndex: number) => {
     setSelectedCourse((prevCourseIndex) =>
       prevCourseIndex === courseIndex ? null : courseIndex
     )
-
-    // Nếu khóa học đã được mở thì đóng lại, ngược lại mở khóa học
     setCollapseStates((prevCollapseStates) => ({
       ...prevCollapseStates,
       [courseIndex]: !prevCollapseStates[courseIndex]
     }))
-
-    setSelectedChapter(null) // Reset the selected chapter when a new course is selected
+    setSelectedChapter(0) // Reset the selected chapter when a new course is selected
   }
 
   const handleSelectChapter = (chapterIndex: number) => {
@@ -588,11 +594,7 @@ const App: React.FC = () => {
             </Box>
             <Box>
               <Box>
-                <VideoContent
-                  videoName={`Chapter ${
-                    selectedChapter + 1
-                  }: ${selectedChapterData}`}
-                />
+                <VideoContent videoName={`${selectedChapterData}`} />
               </Box>
             </Box>
           </Grid>
@@ -625,7 +627,10 @@ const App: React.FC = () => {
                         <ListItemButton
                           key={chapterIndex}
                           onClick={() => handleSelectChapter(chapterIndex)}
-                          selected={selectedChapter === chapterIndex}
+                          selected={
+                            selectedCourse === index &&
+                            selectedChapter === chapterIndex
+                          }
                         >
                           <ListItemText
                             primary={`${chapterIndex + 1}: ${chapter}`}
@@ -666,7 +671,8 @@ const App: React.FC = () => {
         <Button
           variant='outlined'
           disabled={
-            selectedChapterIndex === selectedCourseData?.chapters.length - 1
+            selectedCourseData?.chapters &&
+            selectedChapterIndex === selectedCourseData.chapters.length - 1
           }
           sx={{ px: 4, mr: 4 }}
           onClick={() => handleSelectChapter(selectedChapterIndex + 1)}
