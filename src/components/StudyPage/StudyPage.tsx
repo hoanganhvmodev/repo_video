@@ -18,7 +18,8 @@ import {
   InputLabel,
   FormControl,
   DialogContentText,
-  DialogProps
+  DialogProps,
+  Collapse
 } from '@mui/material'
 import Header from '../Header/HeaderDetail'
 import styles from './StudyPage.module.css'
@@ -39,20 +40,38 @@ interface VideoPlayerProps {
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
   return (
     <Box sx={{}}>
-      <Box
-        sx={{
-          px: 12,
-          backgroundSize: 'cover',
-          boxSizing: 'inherit',
-          backgroundPosition: 'center center',
-          display: 'flex',
-          cursor: 'poiteer',
-          alignItem: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <video src={videoUrl} controls width='100%' height='auto' />
-      </Box>
+      {!videoUrl ? ( // If videoUrl is null, display "Hãy chọn video"
+        <Box
+          sx={{
+            px: 12,
+            backgroundSize: 'cover',
+            boxSizing: 'inherit',
+            backgroundPosition: 'center center',
+            display: 'flex',
+            cursor: 'pointer',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <p>Hãy chọn video</p>
+        </Box>
+      ) : (
+        // If videoUrl is not null, display the video
+        <Box
+          sx={{
+            px: 12,
+            backgroundSize: 'cover',
+            boxSizing: 'inherit',
+            backgroundPosition: 'center center',
+            display: 'flex',
+            cursor: 'pointer',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <video src={videoUrl} controls width='100%' height='auto' />
+        </Box>
+      )}
     </Box>
   )
 }
@@ -321,7 +340,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
             }}
           >
             <DialogTitle id='scroll-dialog-title'>Comments</DialogTitle>
-            <DialogContent dividers>
+            <DialogContent dividers sx={{ paddingRight: 0 }}>
               <DialogContentText
                 id='scroll-dialog-description'
                 ref={descriptionElementRef}
@@ -333,7 +352,8 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
                     width: '100%',
                     minWidth: '300px',
                     overflowY: 'auto',
-                    height: 'calc(90vh)'
+                    height: 'calc(90vh)',
+                    paddingRight: 2
                   }}
                 >
                   <TextField
@@ -448,18 +468,6 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
 }
 
 const App: React.FC = () => {
-  const [selectedCourse, setSelectedCourse] = useState<number | null>(0)
-  const [selectedChapter, setSelectedChapter] = useState<number | null>(0)
-
-  const handleSelectCourse = (courseIndex: number) => {
-    setSelectedCourse(courseIndex)
-    setSelectedChapter(0)
-  }
-
-  const handleSelectChapter = (chapterIndex: number) => {
-    setSelectedChapter(chapterIndex)
-  }
-
   const courses: Course[] = [
     {
       name: 'Course 1',
@@ -495,6 +503,39 @@ const App: React.FC = () => {
       chapters: ['Chapter 5-1', 'Chapter 5-2', 'Chapter 5-3']
     }
   ]
+  const [selectedCourse, setSelectedCourse] = useState<number | null>(null)
+  const [selectedChapter, setSelectedChapter] = useState<number | null>(null)
+
+  // Lưu trạng thái hiện/ẩn của từng khóa học
+  const [collapseStates, setCollapseStates] = useState<{
+    [key: number]: boolean
+  }>({})
+
+  const handleSelectCourse = (courseIndex: number) => {
+    setSelectedCourse((prevCourseIndex) =>
+      prevCourseIndex === courseIndex ? null : courseIndex
+    )
+
+    // Nếu khóa học đã được mở thì đóng lại, ngược lại mở khóa học
+    setCollapseStates((prevCollapseStates) => ({
+      ...prevCollapseStates,
+      [courseIndex]: !prevCollapseStates[courseIndex]
+    }))
+
+    setSelectedChapter(null) // Reset the selected chapter when a new course is selected
+  }
+
+  const handleSelectChapter = (chapterIndex: number) => {
+    setSelectedChapter(chapterIndex)
+  }
+
+  const getTotalChapterCount = () => {
+    let totalCount = 0
+    for (const course of courses) {
+      totalCount += course.chapters.length
+    }
+    return totalCount
+  }
 
   const selectedCourseData =
     selectedCourse !== null ? courses[selectedCourse] : null
@@ -574,32 +615,29 @@ const App: React.FC = () => {
             <Box>Nội dung khóa học</Box>
             <List>
               {courses.map((course, index) => (
-                <ListItemButton
-                  key={index}
-                  onClick={() => handleSelectCourse(index)}
-                  selected={selectedCourse === index}
-                >
-                  <ListItemText primary={`${index + 1}: ${course.name}`} />
-                </ListItemButton>
+                <React.Fragment key={index}>
+                  <ListItemButton onClick={() => handleSelectCourse(index)}>
+                    <ListItemText primary={`${index + 1}: ${course.name}`} />
+                  </ListItemButton>
+                  <Collapse in={collapseStates[index]} unmountOnExit>
+                    <List>
+                      {course.chapters.map((chapter, chapterIndex) => (
+                        <ListItemButton
+                          key={chapterIndex}
+                          onClick={() => handleSelectChapter(chapterIndex)}
+                          selected={selectedChapter === chapterIndex}
+                        >
+                          <ListItemText
+                            primary={`${chapterIndex + 1}: ${chapter}`}
+                          />
+                          <DoneIcon color='success' />
+                        </ListItemButton>
+                      ))}
+                    </List>
+                  </Collapse>
+                </React.Fragment>
               ))}
             </List>
-            {selectedCourseData && selectedCourse !== null && (
-              <List>
-                {selectedCourseData.chapters.map((chapter, index) => (
-                  <ListItemButton
-                    key={index}
-                    onClick={() => handleSelectChapter(index)}
-                    selected={selectedChapter === index}
-                  >
-                    <ListItemText
-                      primary={`Chapter ${index + 1}`}
-                      secondary={`${index + 1}: ${chapter}`}
-                    />
-                    <DoneIcon color='success' />
-                  </ListItemButton>
-                ))}
-              </List>
-            )}
           </Grid>
         </Grid>
       </Box>
