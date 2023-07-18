@@ -1,9 +1,11 @@
-import { createBrowserRouter } from 'react-router-dom'
-import LoginPage from '@pages/login'
-import HomePage from '@pages/home'
-import StudyPage from '@pages/study'
+import FormChapter from '@components/FormChapter/FormChapter'
+import FormCourse from '@components/FormCourse/FormCourse'
+import FormVideo from '@components/FormVideo/FormVideo'
 import AdminLayout from '@layouts/AdminLayout'
-import FormCreateCourse from '@components/FormCreateCourse/FormCreateCourse'
+import HomePage from '@pages/home'
+import LoginPage from '@pages/login'
+import StudyPage from '@pages/study'
+import { createBrowserRouter } from 'react-router-dom'
 
 const router = createBrowserRouter([
   {
@@ -27,7 +29,17 @@ const router = createBrowserRouter([
       {
         // for test
         path: '/admin/course/create',
-        element: <FormCreateCourse />
+        element: <FormCourse />
+      },
+      {
+        // for test
+        path: '/admin/chapter/create',
+        element: <FormChapter />
+      },
+      {
+        // for test
+        path: '/admin/video/create',
+        element: <FormVideo />
       }
     ]
   }

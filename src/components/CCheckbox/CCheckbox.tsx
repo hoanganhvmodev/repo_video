@@ -7,7 +7,7 @@ interface CCheckboxProps<T> {
   label: string
   id?: string
   sxCheckBoxCustom?: object
-  onChange: (e: ChangeEvent<HTMLInputElement> , item?: T) => void
+  onChange: (e: ChangeEvent<HTMLInputElement>, item?: T) => void
 }
 
 export default function CCheckbox<T>(props: CCheckboxProps<T>) {
@@ -15,13 +15,22 @@ export default function CCheckbox<T>(props: CCheckboxProps<T>) {
   return (
     <>
       <Checkbox
+        id={id ? id : `${value}-${label}`}
         checked={value}
         onChange={(e) => {
           onChange(e, item)
         }}
         sx={{ ...sxCheckBoxCustom }}
       />
-      <InputLabel id={id ? id : label}>{label}</InputLabel>
+      <label
+        className='select-none MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated MuiFormLabel-colorPrimary MuiInputLabel-root MuiInputLabel-animated css-1e802rj-MuiFormLabel-root-MuiInputLabel-root'
+        htmlFor={id ? id : `${value}-${label}`}
+        style={{
+          cursor: 'pointer'
+        }}
+      >
+        {label}
+      </label>
     </>
   )
 }

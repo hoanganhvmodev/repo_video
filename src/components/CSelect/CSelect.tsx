@@ -43,7 +43,7 @@ export default function CSelect<
       >
         {items &&
           items.map((item) => (
-            <MenuItem value={item.value}>
+            <MenuItem key={item.value} value={item.value}>
               {useI18n ? t(item.label) : item.label}
             </MenuItem>
           ))}

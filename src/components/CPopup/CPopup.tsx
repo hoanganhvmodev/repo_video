@@ -12,6 +12,7 @@ interface CPopupProps {
   titleCustom?: ReactNode
   descriptionCustom?: ReactNode
   actionCustom?: ReactNode
+  PaperPropsCustom?: object
 }
 
 const CPopup: FC<CPopupProps> = ({
@@ -20,18 +21,21 @@ const CPopup: FC<CPopupProps> = ({
   description,
   titleCustom,
   descriptionCustom,
-  actionCustom
+  actionCustom,
+  PaperPropsCustom
 }) => {
   return (
     <div>
-      <Dialog open={open}>
-        <DialogTitle sx={{pt: 4, px: 3}}>{titleCustom ? titleCustom : title}</DialogTitle>
+      <Dialog open={open} PaperProps={{ ...PaperPropsCustom }}>
+        <DialogTitle sx={{ pt: 4, px: 3 }}>
+          {titleCustom ? titleCustom : title}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             {descriptionCustom ? descriptionCustom : description}
           </DialogContentText>
         </DialogContent>
-        <DialogActions sx={{pb: 3, px: 3}}>{actionCustom}</DialogActions>
+        <DialogActions sx={{ pb: 3, px: 3 }}>{actionCustom}</DialogActions>
       </Dialog>
     </div>
   )

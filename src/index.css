@@ -13,6 +13,11 @@ body {
   line-height: 20px;
 }
 
+/* Common defined class  */
+.select-none {
+  -webkit-user-select: none;
+  user-select: none;
+}
 
 /* Fix CSS : Select tags */
 .MuiInputBase-adornedStart {
