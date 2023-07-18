@@ -2,9 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/dist/query'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
-const reducer = {
- 
-}
+const reducer = {}
 
 const store = configureStore({
   reducer,
@@ -12,7 +10,6 @@ const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false
     })
- 
 })
 
 setupListeners(store.dispatch)
