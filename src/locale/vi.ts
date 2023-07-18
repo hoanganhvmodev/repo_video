@@ -6,6 +6,7 @@ const translation = {
   commonForm: {
     close: 'Đóng',
     create: 'Tạo',
+    edit: 'Chỉnh sửa',
     yes: 'Có',
     no: 'Không'
   },
@@ -13,7 +14,8 @@ const translation = {
     notEmpty: 'Thông tin này không được để trống'
   },
   createCourse: {
-    title: 'Thêm khóa học',
+    titleCreate: 'Thêm khóa học',
+    titleEdit: 'Chỉnh sửa khóa học',
     nameLabel: 'Nhập tên khóa học',
     speakerLabel: 'Speaker',
     levelLabel: 'Độ khó',
@@ -30,6 +32,13 @@ const translation = {
     warningCloseTitle: 'Bạn có muốn đóng biểu mẫu tạo khóa học không ?',
     warningCloseDesc:
       'Toàn bộ dữ liệu đang nhập sẽ không được lưu nếu đóng biểu mẫu tạo khóa học'
+  },
+  formChapter: {
+    titleCreate: 'Thêm chương',
+    titleEdit: 'Sửa chương',
+    warningCloseTitle: 'Bạn có muốn đóng biểu mẫu tạo chương không ?',
+    warningCloseDesc:
+      'Toàn bộ dữ liệu đang nhập sẽ không được lưu nếu đóng biểu mẫu tạo chương'
   }
 }
 

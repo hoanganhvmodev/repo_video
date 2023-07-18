@@ -6,7 +6,7 @@ import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CLazySelect from '@components/CLazySelect/CLazySelect'
 
-interface FormCreateCourseProps {}
+interface FormVideoProps {}
 
 // *** Fake interface Speaker
 interface Speaker {
@@ -22,7 +22,7 @@ const fakeSpeaker = [
 
 // ***
 
-const FormCreateCourse: FC<FormCreateCourseProps> = ({}) => {
+const FormVideo: FC<FormVideoProps> = ({}) => {
   const { t } = useTranslation()
   const [openFormCreate, setOpenFormCreate] = useState<boolean>(true)
   const [openWarningClose, setOpenWarningClose] = useState<boolean>(false)
@@ -74,6 +74,7 @@ const FormCreateCourse: FC<FormCreateCourseProps> = ({}) => {
           sxCustom={{
             width: '900px'
           }}
+          onSubmit={() => {}}
           inputArea={
             <Box sx={{ p: 3 }}>
               <Grid container spacing={2}>
@@ -145,4 +146,4 @@ const FormCreateCourse: FC<FormCreateCourseProps> = ({}) => {
   )
 }
 
-export default FormCreateCourse
+export default FormVideo

@@ -4,7 +4,9 @@ import CInputTags from '@components/CInputTags/CInputTags'
 import CPopup from '@components/CPopup/CPopup'
 import CSelect from '@components/CSelect/CSelect'
 import CUploadImage from '@components/CUploadImage/CUploadImage'
+import { ACTION_FORM } from '@constants/common-form'
 import { LEVEL_COURSE } from '@constants/course'
+import { useUploadImage } from '@hooks/useUploadImage'
 import {
   Box,
   Button,
@@ -13,16 +15,14 @@ import {
   SelectChangeEvent,
   TextField
 } from '@mui/material'
-import { DataFormCourse, ILevel, Level } from '@type/Course'
-import { ChangeEvent, FC, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useUploadImage } from '@hooks/useUploadImage'
-import { ACTION_FORM } from '@constants/common-form'
 import { ActionForm } from '@type/CommonForm'
-import { useForm, useController } from 'react-hook-form'
+import { DataFormCourse, ILevel, Level } from '@type/Course'
+import { ChangeEvent, FC, useState, useMemo } from 'react'
+import { useController, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
-interface FormCreateCourseProps {
-  action: ActionForm
+interface FormCourseProps {
+  action?: ActionForm
   dataFormEdit?: DataFormCourse
 }
 
@@ -36,16 +36,16 @@ const initDataForm = {
   description: ''
 }
 
-const FormCreateCourse: FC<FormCreateCourseProps> = ({
+const FormCourse: FC<FormCourseProps> = ({
   action = ACTION_FORM.CREATE,
   dataFormEdit
 }) => {
+  // *********** State ******************
   const initDataFormState = dataFormEdit ? dataFormEdit : initDataForm
 
   const { t } = useTranslation()
-  const [openFormCreate, setOpenFormCreate] = useState<boolean>(true)
+  const [openForm, setOpenForm] = useState<boolean>(true)
   const [openWarningClose, setOpenWarningClose] = useState<boolean>(false)
-  const [dataForm, setDataForm] = useState<DataFormCourse>(initDataFormState)
   const { attachment, handleSelectFile, handleCloseSelectFile } =
     useUploadImage()
   const {
@@ -64,6 +64,18 @@ const FormCreateCourse: FC<FormCreateCourseProps> = ({
   })
   const { field: fieldTags } = useController({ name: 'tags', control })
 
+  // *********** Computed ******************
+  const getTitle = useMemo(() => {
+    if (action === ACTION_FORM.CREATE) return t('createCourse.titleCreate')
+    if (action === ACTION_FORM.EDIT) return t('createCourse.titleEdit')
+  }, [action])
+
+  const getLabelBtnSubmit = useMemo(() => {
+    if (action === ACTION_FORM.CREATE) return t('commonForm.create')
+    if (action === ACTION_FORM.EDIT) return t('commonForm.edit')
+  }, [action])
+
+  // *********** Methods ******************
   const handleCloseDialog = (event: object, reason: string) => {
     if (reason && reason == 'backdropClick') return
     setOpenWarningClose(true)
@@ -78,8 +90,6 @@ const FormCreateCourse: FC<FormCreateCourseProps> = ({
   }
 
   const handleSelectedTags = (newTags: string[]) => {
-    console.log('call')
-
     fieldTags.onChange(newTags)
   }
 
@@ -88,7 +98,7 @@ const FormCreateCourse: FC<FormCreateCourseProps> = ({
   }
 
   const handleCloseFormCreate = () => {
-    setOpenFormCreate(false)
+    setOpenForm(false)
     setOpenWarningClose(false)
   }
 
@@ -128,7 +138,7 @@ const FormCreateCourse: FC<FormCreateCourseProps> = ({
   return (
     <>
       <Dialog
-        open={openFormCreate}
+        open={openForm}
         PaperProps={{
           sx: {
             minWidth: '900px'
@@ -138,23 +148,27 @@ const FormCreateCourse: FC<FormCreateCourseProps> = ({
       >
         <CForm
           onSubmit={handleSubmit(handleSubmitForm)}
-          title={t('createCourse.title')}
+          title={getTitle || ''}
           sxCustom={{
             width: '900px'
           }}
           // ============= Body Form ================
           inputArea={
-            <Box sx={{ p: 3 }}>
+            <Box sx={{ p: 1 }}>
               <Grid container spacing={2}>
                 {/* ======= LEFT FORM ================= */}
-                <Grid xs={8}>
+                <Grid item xs={8}>
                   <Box>
                     {/* ================= INPUT NAME COURSE ================= */}
                     <TextField
                       label={t('createCourse.nameLabel')}
                       variant='standard'
                       fullWidth
-                      {...register('name')}
+                      {...register('name', {
+                        required: t('validatedMessage.notEmpty')
+                      })}
+                      error={!!errors.name}
+                      helperText={errors.name?.message}
                     />
                   </Box>
                   <Grid
@@ -166,7 +180,7 @@ const FormCreateCourse: FC<FormCreateCourseProps> = ({
                     }}
                   >
                     {/* ================= INPUT LEVEL ================= */}
-                    <Grid xs={5}>
+                    <Grid item xs={5}>
                       <CSelect<ILevel>
                         value={fieldLevel.value}
                         label={t('createCourse.nameLabel')}
@@ -179,8 +193,14 @@ const FormCreateCourse: FC<FormCreateCourseProps> = ({
                       />
                     </Grid>
                     {/* ================= INPUT REQUIRE SEQUENCE ================= */}
-                    <Grid xs={5}>
-                      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                    <Grid item xs={6}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'flex-end',
+                          justifyContent: 'end'
+                        }}
+                      >
                         <CCheckbox
                           value={fieldIsSequence.value}
                           label={t('createCourse.sequenceLabel')}
@@ -209,12 +229,16 @@ const FormCreateCourse: FC<FormCreateCourseProps> = ({
                       multiline
                       rows={6}
                       sx={{ width: '100%' }}
-                      {...register('description')}
+                      {...register('description', {
+                        required: t('validatedMessage.notEmpty')
+                      })}
+                      error={!!errors.description}
+                      helperText={errors.description?.message}
                     />
                   </Box>
                 </Grid>
                 {/* ======= RIGHT FORM ================= */}
-                <Grid xs={4}>
+                <Grid item xs={4}>
                   <Box sx={{ display: 'flex', justifyContent: 'end' }}>
                     {/* ================= INPUT THUMBNAIL ================= */}
                     <CUploadImage
@@ -250,7 +274,7 @@ const FormCreateCourse: FC<FormCreateCourseProps> = ({
                 variant='contained'
                 sx={{ minWidth: '120px' }}
               >
-                {t('commonForm.create')}
+                {getLabelBtnSubmit || ''}
               </Button>
             </>
           }
@@ -284,4 +308,4 @@ const FormCreateCourse: FC<FormCreateCourseProps> = ({
   )
 }
 
-export default FormCreateCourse
+export default FormCourse

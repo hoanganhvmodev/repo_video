@@ -1,6 +1,6 @@
 import { Chip, TextField } from '@mui/material'
 import Downshift, { GetInputPropsOptions } from 'downshift'
-import { ChangeEvent, FC, Fragment, useEffect, useState } from 'react'
+import { ChangeEvent, FC, Fragment, useEffect, useRef, useState } from 'react'
 
 interface CInputTagsProps {
   selectedTags: any
@@ -22,6 +22,7 @@ const CInputTags: FC<CInputTagsProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState<string>('')
   const [selectedItem, setSelectedItem] = useState<string[]>([])
+  const inputRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setSelectedItem(tags)
@@ -51,6 +52,15 @@ const CInputTags: FC<CInputTagsProps> = ({
   ) {
     if (event.key === ' ') {
       handleAddTags(event.currentTarget.value)
+    }
+
+    if (event.key === 'Tab') {
+      console.log(inputRef)
+
+      handleAddTags(event.currentTarget.value)
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 0)
     }
     // Handle remove tag
     if (
@@ -97,6 +107,7 @@ const CInputTags: FC<CInputTagsProps> = ({
           return (
             <div>
               <TextField
+                inputRef={inputRef}
                 value={inputValue}
                 variant='standard'
                 sx={{
