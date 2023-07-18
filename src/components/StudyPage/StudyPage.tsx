@@ -19,7 +19,10 @@ import {
   FormControl,
   DialogContentText,
   DialogProps,
-  Collapse
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  IconButton
 } from '@mui/material'
 import Header from '../Header/HeaderDetail'
 import styles from './StudyPage.module.css'
@@ -27,6 +30,8 @@ import DoneIcon from '@mui/icons-material/Done'
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined'
 import AddIcon from '@mui/icons-material/Add'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
 
 interface Course {
   name: string
@@ -609,37 +614,64 @@ const App: React.FC = () => {
               right: '0px',
               width: '30vw',
               height: 'calc(100vh - 124px)',
-              overflowY: 'auto',
-              fontSize: 18,
-              fontWeight: 600
+              overflowY: 'auto'
             }}
           >
-            <Box>Nội dung khóa học</Box>
+            <Box sx={{ fontSize: 18, fontWeight: 600, ml: 2, mt: 2, mb: 1 }}>
+              Nội dung khóa học
+            </Box>
             <List>
               {courses.map((course, index) => (
                 <React.Fragment key={index}>
-                  <ListItemButton onClick={() => handleSelectCourse(index)}>
-                    <ListItemText primary={`${index + 1}: ${course.name}`} />
-                  </ListItemButton>
-                  <Collapse in={collapseStates[index]} unmountOnExit>
-                    <List>
-                      {course.chapters.map((chapter, chapterIndex) => (
-                        <ListItemButton
-                          key={chapterIndex}
-                          onClick={() => handleSelectChapter(chapterIndex)}
-                          selected={
-                            selectedCourse === index &&
-                            selectedChapter === chapterIndex
-                          }
-                        >
-                          <ListItemText
-                            primary={`${chapterIndex + 1}: ${chapter}`}
-                          />
-                          <DoneIcon color='success' />
-                        </ListItemButton>
-                      ))}
-                    </List>
-                  </Collapse>
+                  <Accordion
+                    expanded={collapseStates[index] || false}
+                    onChange={() => handleSelectCourse(index)}
+                    elevation={0}
+                    square
+                  >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls={`course-panel-${index}`}
+                      id={`course-header-${index}`}
+                      sx={{ backgroundColor: '#EDEFF1' }}
+                    >
+                      <Typography
+                        variant='h6'
+                        component='h4'
+                        color={selectedCourse === index ? 'primary' : 'inherit'}
+                      >
+                        {`${index + 1}: ${course.name}`}
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails sx={{ mt: -0.5, mb: -3.5, py: 0 }}>
+                      <List>
+                        {course.chapters.map((chapter, chapterIndex) => (
+                          <ListItemButton
+                            key={chapterIndex}
+                            onClick={() => handleSelectChapter(chapterIndex)}
+                            selected={
+                              selectedCourse === index &&
+                              selectedChapter === chapterIndex
+                            }
+                          >
+                            <ListItemText
+                              primary={`${chapterIndex + 1}: ${chapter}`}
+                              secondary={
+                                <Box sx={{ display: 'flex' }}>
+                                  <PlayCircleOutlineIcon
+                                    fontSize='small'
+                                    sx={{ mr: 1 }}
+                                  />
+                                  8:30
+                                </Box>
+                              }
+                            />
+                            <DoneIcon color='success' />
+                          </ListItemButton>
+                        ))}
+                      </List>
+                    </AccordionDetails>
+                  </Accordion>
                 </React.Fragment>
               ))}
             </List>

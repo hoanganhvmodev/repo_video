@@ -34,10 +34,20 @@ export const theme = createTheme({
       lineHeight: '24px',
       fontWeight: 500
     },
+    h6: {
+      fontSize: '18px',
+      lineHeight: '22px',
+      fontWeight: 400
+    },
     body1: {
       fontSize: '16px',
       lineHeight: '20px',
       fontWeight: 400
+    },
+    body2: {
+      fontSize: '14px',
+      lineHeight: '18px',
+      fontWeight: 300
     }
   },
   components: {
