@@ -559,17 +559,6 @@ const App: React.FC = () => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          position: 'fixed',
-          top: '0px',
-          left: '0px',
-          zIndex: 2,
-          width: '100%'
-        }}
-      >
-        <Header />
-      </Box>
       <Box>
         <Grid container spacing={1}>
           <Grid

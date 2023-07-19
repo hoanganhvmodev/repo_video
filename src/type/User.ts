@@ -1,10 +1,7 @@
 export interface User {
-  id: number
-  createdAt: string
-  updatedAt: string
-  deletedAt: any
+  avatar_url: string
   email: string
-  avatar: string
-  employeeId: any
-  department: any
+  full_name: string
+  id: number
+  provider: string
 }

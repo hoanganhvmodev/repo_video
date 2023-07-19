@@ -1,17 +1,15 @@
 import {
+  Box,
+  Button,
+  Fade,
   FormControl,
+  Grid,
+  InputLabel,
   MenuItem,
   Select,
-  InputLabel,
-  Fade,
-  Grid,
-  Typography,
-  Box,
-  Button
+  Typography
 } from '@mui/material'
 import { useState } from 'react'
-import Header from '../Header/HeaderHomePage'
-import Footer from '../Footer/Footer'
 
 interface Course {
   id: number
@@ -70,7 +68,6 @@ const HomePage: React.FC = () => {
   ]
   return (
     <Box>
-      <Header />
       <Box sx={{ px: 6 }}>
         <Box sx={{ py: 4, fontSize: 18 }} width={200}>
           <FormControl
@@ -206,7 +203,6 @@ const HomePage: React.FC = () => {
           </Button>
         </Box>
       </Box>
-      <Footer />
     </Box>
   )
 }

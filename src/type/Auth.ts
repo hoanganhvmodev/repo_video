@@ -1,9 +1,15 @@
 export interface ResponseLogin {
-  accessToken: string
-  refreshToken: string
-  expires_in: number
+  user: {
+    id: number
+    email: string
+    full_name: string
+    avatar_url: string
+    provider: string
+  }
+  token: string
+  refresh_token: string
 }
 
 export interface FormLogin {
-  token: string
+  access_token: string
 }
