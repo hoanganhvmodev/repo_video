@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Box,
   Grid,
@@ -22,71 +22,63 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  IconButton
+  Slide
 } from '@mui/material'
 import Header from '../Header/HeaderDetail'
 import styles from './StudyPage.module.css'
 import DoneIcon from '@mui/icons-material/Done'
-import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined'
 import AddIcon from '@mui/icons-material/Add'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import NoteRoundedIcon from '@mui/icons-material/NoteRounded'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { formatTimeVideo } from '@utils/formatTimeVideo'
+import { TransitionProps } from '@mui/material/transitions'
+import { useController, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 interface Course {
   name: string
   chapters: string[]
 }
 
-interface VideoPlayerProps {
-  videoUrl: string
-}
-
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl }) => {
-  return (
-    <Box sx={{}}>
-      {!videoUrl ? ( // If videoUrl is null, display "Hãy chọn video"
-        <Box
-          sx={{
-            px: 12,
-            backgroundSize: 'cover',
-            boxSizing: 'inherit',
-            backgroundPosition: 'center center',
-            display: 'flex',
-            cursor: 'pointer',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <p>Hãy chọn video</p>
-        </Box>
-      ) : (
-        // If videoUrl is not null, display the video
-        <Box
-          sx={{
-            px: 12,
-            backgroundSize: 'cover',
-            boxSizing: 'inherit',
-            backgroundPosition: 'center center',
-            display: 'flex',
-            cursor: 'pointer',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <video src={videoUrl} controls width='100%' height='auto' />
-        </Box>
-      )}
-    </Box>
-  )
+interface Note {
+  time: number
+  content: string
 }
 
 interface VideoContentPros {
   videoName: string
+  videoUrl: string
 }
-const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<unknown, any>
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction='left' ref={ref} {...props} />
+})
+
+const VideoContent: React.FC<VideoContentPros> = ({ videoName, videoUrl }) => {
+  const { t } = useTranslation()
   const [showNoteDialog, setShowNoteDialog] = useState(false)
-  const [note, setNote] = useState('')
+
+  const {
+    register: registerNote,
+    handleSubmit: handleSubmitNote,
+    formState: formStateNote,
+    control
+  } = useForm({
+    defaultValues: {
+      note: ''
+    }
+  })
+
+  const { field: fieldNote } = useController({ name: 'note', control })
 
   const handleOpenNoteDialog = () => {
     setShowNoteDialog(true)
@@ -96,15 +88,38 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
     setShowNoteDialog(false)
   }
 
-  const handleSaveNote = () => {
-    // Perform save note logic here
-    console.log('Note:', note)
+  const handleSaveNote = (data: { note: string }) => {
+    handleAddNote(data.note)
     handleCloseNoteDialog()
+    fieldNote.onChange('')
+  }
+  const [currentTime, setCurrentTime] = useState(0)
+  const [notesList, setNotesList] = useState<Note[]>([])
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime)
+    }
+  }
+  const handleAddNote = (note: string) => {
+    if (note.trim() !== '') {
+      const newNote: Note = {
+        time: currentTime,
+        content: note
+      }
+      setNotesList([...notesList, newNote])
+    }
+  }
+  const handleNoteClick = (timestamp: number) => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = timestamp
+      setCurrentTime(timestamp)
+    }
+
+    handleCloseNote()
   }
 
-  const handleNoteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNote(event.target.value)
-  }
   const fakeComments = [
     {
       id: 1,
@@ -184,18 +199,26 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
   ]
 
   const [open, setOpen] = React.useState(false)
+  const [openNote, setOpenNote] = React.useState(false)
   const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper')
   const [comments, setComments] = React.useState(fakeComments)
   const [commentText, setCommentText] = React.useState('')
   const [showAllComments, setShowAllComments] = React.useState(false)
+  const [showAllNote, setShowAllNote] = React.useState(false)
 
   const handleClickOpen = (scrollType: DialogProps['scroll']) => () => {
     setOpen(true)
     setScroll(scrollType)
   }
-
+  const handleClickOpenNote = (scrollType: DialogProps['scroll']) => () => {
+    setOpenNote(true)
+    setScroll(scrollType)
+  }
   const handleClose = () => {
     setOpen(false)
+  }
+  const handleCloseNote = () => {
+    setOpenNote(false)
   }
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -218,6 +241,15 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
   const handleShowAllComments = () => {
     setShowAllComments(true)
   }
+  const handleShowLessComments = () => {
+    setShowAllComments(false)
+  }
+  const handleShowAllNote = () => {
+    setShowAllNote(true)
+  }
+  const handleShowLessNote = () => {
+    setShowAllNote(false)
+  }
 
   const descriptionElementRef = React.useRef<HTMLElement>(null)
   React.useEffect(() => {
@@ -231,6 +263,30 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
 
   return (
     <Box>
+      <Box sx={{}}>
+        <Box
+          sx={{
+            px: 14,
+            backgroundSize: 'cover',
+            boxSizing: 'inherit',
+            backgroundPosition: 'center center',
+            display: 'flex',
+            cursor: 'pointer',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'black'
+          }}
+        >
+          <video
+            src={videoUrl}
+            ref={videoRef}
+            onTimeUpdate={handleTimeUpdate}
+            controls
+            width='100%'
+            height='auto'
+          />
+        </Box>
+      </Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box>
           <Box sx={{ py: 4, fontSize: 14, ml: 13 }} width={125}>
@@ -262,12 +318,15 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
         </Box>
         <Box>
           <Button
-            sx={{ mt: 4, mr: 10, backgroundColor: 'primary' }}
+            sx={{ mt: 4, mr: 14, backgroundColor: 'primary' }}
             variant='contained'
             onClick={handleOpenNoteDialog}
           >
             <AddIcon></AddIcon>
-            Thêm ghi chú tại : 3:25
+            <Box>Thêm ghi chú tại</Box>
+            <Box sx={{ ml: 0.5, fontSize: 15 }}>
+              {formatTimeVideo(currentTime)}
+            </Box>
           </Button>
         </Box>
       </Box>
@@ -279,28 +338,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
         <Box sx={{ pt: 5 }}>
           Lorem ipsum dolor sit amet consectetur. Sit at nibh vulputate neque
           risus tellus tortor aliquam. Vitae vel urna curabitur sit id
-          consequat. Lorem varius lectus mauris egestas gravida. Faucibus eu dui
-          ac purus massa id ultrices turpis.Lorem ipsum dolor sit amet
-          consectetur. Sit at nibh vulputate neque risus tellus tortor aliquam.
-          Vitae vel urna curabitur sit id consequat. Lorem varius lectus mauris
-          egestas gravida. Faucibus eu dui ac purus massa id ultrices
-          turpis.Lorem ipsum dolor sit amet consectetur. Sit at nibh vulputate
-          neque risus tellus tortor aliquam. Vitae vel urna curabitur sit id
-          consequat. Lorem varius lectus mauris egestas gravida. Faucibus eu dui
-          ac purus massa id ultrices turpis.Lorem ipsum dolor sit amet
-          consectetur. Sit at nibh vulputate neque risus tellus tortor aliquam.
-          Vitae vel urna curabitur sit id consequat. Lorem varius lectus mauris
-          egestas gravida. Faucibus eu dui ac purus massa id ultrices turpis.
-          Lorem ipsum dolor sit amet consectetur. Sit at nibh vulputate neque
-          risus tellus tortor aliquam. Vitae vel urna curabitur sit id
-          consequat. Lorem varius lectus mauris egestas gravida. Faucibus eu dui
-          ac purus massa id ultrices turpis.Lorem ipsum dolor sit amet
-          consectetur. Sit at nibh vulputate neque risus tellus tortor
-          aliquam.Lorem ipsum dolor sit amet consectetur. Sit at nibh vulputate
-          neque risus tellus tortor aliquam. Vitae vel urna curabitur sit id
-          consequat. Lorem varius lectus mauris egestas gravida. Faucibus eu dui
-          ac purus massa id ultrices turpis.Lorem ipsum dolor sit amet
-          consectetur. Sit at nibh vulputate neque risus tellus tortor aliquam.
+          consequat.
         </Box>
         <Box sx={{ display: 'flex' }}>
           <Button
@@ -312,13 +350,14 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
               bottom: '66px',
               right: '500px',
               zIndex: 2,
-              backgroundColor: 'white'
+              backgroundColor: 'primary'
             }}
           >
-            <ChatOutlinedIcon color='primary' sx={{ mr: 1 }}></ChatOutlinedIcon>
+            <ChatOutlinedIcon color='inherit' sx={{ mr: 1 }}></ChatOutlinedIcon>
             Hỏi đáp
           </Button>
           <Dialog
+            TransitionComponent={Transition}
             open={open}
             className={styles['scrollBar']}
             onClose={handleClose}
@@ -417,6 +456,190 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
                         </Button>
                       </Box>
                     )}
+                    {showAllComments && (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          mt: 4
+                        }}
+                      >
+                        <Button onClick={handleShowLessComments}>
+                          <KeyboardArrowUpIcon
+                            sx={{ transform: 'rotate(360deg)' }}
+                          ></KeyboardArrowUpIcon>
+                          Thu gọn
+                        </Button>
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+              </DialogContentText>
+            </DialogContent>
+          </Dialog>
+
+          <Button
+            size='large'
+            variant='outlined'
+            onClick={handleClickOpenNote('paper')}
+            sx={{
+              position: 'fixed',
+              bottom: '66px',
+              right: '660px',
+              zIndex: 2,
+              backgroundColor: 'primary'
+            }}
+          >
+            <NoteRoundedIcon color='inherit' sx={{ mr: 1 }}></NoteRoundedIcon>
+            Ghi chú
+          </Button>
+          <Dialog
+            TransitionComponent={Transition}
+            open={openNote}
+            className={styles['scrollBar']}
+            onClose={handleCloseNote}
+            scroll={scroll}
+            aria-labelledby='scroll-dialog-title'
+            aria-describedby='scroll-dialog-description'
+            maxWidth='lg'
+            PaperProps={{
+              style: {
+                width: '43%',
+                minWidth: '300px',
+                height: '100vh',
+                maxHeight: '100vh',
+                position: 'absolute',
+                top: -32,
+                right: -30
+              }
+            }}
+          >
+            <DialogTitle id='scroll-dialog-title'>Ghi chú của bạn</DialogTitle>
+            <DialogContent dividers sx={{ paddingRight: 0 }}>
+              <DialogContentText
+                id='scroll-dialog-description'
+                ref={descriptionElementRef}
+                tabIndex={-1}
+              >
+                <Box
+                  className={styles['scrollBar']}
+                  sx={{
+                    width: '100%',
+                    minWidth: '300px',
+                    overflowY: 'auto',
+                    height: 'calc(90vh)',
+                    paddingRight: 2
+                  }}
+                >
+                  <Box>
+                    {notesList
+                      .slice(0, showAllNote ? notesList.length : 5)
+                      .map((noteItem) => (
+                        <Box key={noteItem.time} alignItems='center' mt={5}>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'space-between'
+                            }}
+                          >
+                            <Box sx={{ display: 'flex' }}>
+                              <Box
+                                onClick={() => handleNoteClick(noteItem.time)}
+                                sx={{
+                                  display: 'flex',
+                                  justifyItems: 'center',
+                                  justifyContent: 'center',
+                                  width: 60,
+                                  borderRadius: 5,
+                                  backgroundColor: 'orange',
+                                  color: '#fff',
+                                  mr: 2,
+                                  fontSize: 18,
+                                  height: 30,
+                                  pt: 0.5,
+                                  mb: 0.5,
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                {formatTimeVideo(noteItem.time)}
+                              </Box>
+                              <Box
+                                sx={{
+                                  pt: 0.5,
+                                  mb: 0.5,
+                                  fontSize: 20,
+                                  color: 'red'
+                                }}
+                              >
+                                Tên bài học
+                              </Box>
+                            </Box>
+                            <Box
+                              sx={{
+                                display: 'flex'
+                              }}
+                            >
+                              <EditIcon
+                                sx={{ mr: 1, cursor: 'pointer' }}
+                                className={styles['icon-note']}
+                              />
+                              <DeleteIcon
+                                sx={{ cursor: 'pointer' }}
+                                className={styles['icon-note']}
+                              />
+                            </Box>
+                          </Box>
+                          <Box
+                            sx={{
+                              backgroundColor: '#E9ECEE',
+                              borderRadius: 4,
+                              p: 2,
+                              display: 'flex'
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                fontSize: 16,
+                                p: 1
+                              }}
+                            >
+                              {noteItem.content}
+                            </Box>
+                          </Box>
+                        </Box>
+                      ))}
+                    {notesList.length > 5 && !showAllNote && (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          mt: 4
+                        }}
+                      >
+                        <Button onClick={handleShowAllNote}>
+                          <KeyboardArrowUpIcon
+                            sx={{ transform: 'rotate(180deg)' }}
+                          ></KeyboardArrowUpIcon>
+                          Xem thêm
+                        </Button>
+                      </Box>
+                    )}
+                    {showAllNote && (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          mt: 4
+                        }}
+                      >
+                        <Button onClick={handleShowLessNote}>
+                          <KeyboardArrowUpIcon
+                            sx={{ transform: 'rotate(360deg)' }}
+                          ></KeyboardArrowUpIcon>
+                          Thu gọn
+                        </Button>
+                      </Box>
+                    )}
                   </Box>
                 </Box>
               </DialogContentText>
@@ -431,7 +654,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
           <Box
             sx={{
               display: 'flex',
-              width: 60,
+              width: 70,
               borderRadius: 3,
               backgroundColor: 'orange',
               color: '#fff',
@@ -439,28 +662,33 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName }) => {
               ml: '10px'
             }}
           >
-            3:25
+            {formatTimeVideo(currentTime)}
           </Box>
         </DialogTitle>
-        <DialogContent
-          className={styles['scrollBar']}
-          sx={{ width: 600, height: 200 }}
-          dividers
-        >
-          <TextField
-            label='Ghi chú'
-            multiline
-            value={note}
-            onChange={handleNoteChange}
-            fullWidth
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseNoteDialog}>Hủy</Button>
-          <Button onClick={handleSaveNote} variant='contained' color='primary'>
-            Lưu
-          </Button>
-        </DialogActions>
+        <form onSubmit={handleSubmitNote(handleSaveNote)}>
+          <DialogContent
+            className={styles['scrollBar']}
+            sx={{ width: 600, height: 200 }}
+            dividers
+          >
+            <TextField
+              label='Ghi chú'
+              multiline
+              fullWidth
+              {...registerNote('note', {
+                required: t('validatedMessage.notEmpty')
+              })}
+              error={!!formStateNote.errors.note}
+              helperText={formStateNote.errors.note?.message}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseNoteDialog}>Hủy</Button>
+            <Button type='submit' variant='contained' color='primary'>
+              Lưu
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </Box>
   )
@@ -585,22 +813,16 @@ const App: React.FC = () => {
           >
             <Box
               sx={{
-                backgroundColor: 'black',
-                padding: '0 1%',
                 width: '100%',
                 display: 'block'
               }}
             >
               {selectedChapterData && (
-                <VideoPlayer
+                <VideoContent
                   videoUrl={`http://www.w3schools.com/html/mov_bbb.mp4`}
+                  videoName={`${selectedChapterData}`}
                 />
               )}
-            </Box>
-            <Box>
-              <Box>
-                <VideoContent videoName={`${selectedChapterData}`} />
-              </Box>
             </Box>
           </Grid>
 

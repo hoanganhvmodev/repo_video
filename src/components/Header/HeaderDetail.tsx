@@ -13,7 +13,6 @@ import Avatar from '@mui/material/Avatar'
 import Image from 'mui-image'
 import logo from '../../img/Logo.png'
 import ArrowBackIosSharpIcon from '@mui/icons-material/ArrowBackIosSharp'
-import NoteRoundedIcon from '@mui/icons-material/NoteRounded'
 import { Link } from '@mui/material'
 
 export default function Header() {
@@ -143,16 +142,6 @@ export default function Header() {
             >
               {'50/100 video da xem'}
             </Box>
-            <IconButton
-              size='large'
-              aria-label='show 17 new notifications'
-              color='inherit'
-            >
-              <NoteRoundedIcon sx={{ color: '#CCCCCC' }} />
-              <Box sx={{ fontSize: '16px', ml: 1, color: 'white' }}>
-                Ghi chú
-              </Box>
-            </IconButton>
             <IconButton
               aria-controls={menuId}
               aria-haspopup='true'
