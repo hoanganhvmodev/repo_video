@@ -3,6 +3,9 @@ const translation = {
   Greeting: 'Xin chào, {{name}}',
   vi: 'Tiếng Việt',
   en: 'Tiếng Anh',
+  login: {
+    loginWithGoogle: "Đăng nhập với Google"
+  },
   commonForm: {
     close: 'Đóng',
     create: 'Tạo',

@@ -16,6 +16,8 @@ import Avatar from '@mui/material/Avatar'
 import Image from 'mui-image'
 import logo from '../../img/Logo.png'
 import { Link } from '@mui/material'
+import { logout } from '@redux/slices/auth/authSlice'
+import { useAuth } from '@hooks/useAuth'
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -24,6 +26,8 @@ export default function Header() {
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
+
+  const { logout } = useAuth()
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -64,6 +68,14 @@ export default function Header() {
       </MenuItem>
       <MenuItem onClick={handleMenuClose} sx={{ fontSize: '14px' }}>
         My account
+      </MenuItem>
+      <MenuItem
+        onClick={async () => {
+          await logout()
+        }}
+        sx={{ fontSize: '14px' }}
+      >
+        Logout
       </MenuItem>
     </Menu>
   )

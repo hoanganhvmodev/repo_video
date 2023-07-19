@@ -15,6 +15,7 @@ import logo from '../../img/Logo.png'
 import ArrowBackIosSharpIcon from '@mui/icons-material/ArrowBackIosSharp'
 import NoteRoundedIcon from '@mui/icons-material/NoteRounded'
 import { Link } from '@mui/material'
+import { useAuth } from '@hooks/useAuth'
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -23,6 +24,7 @@ export default function Header() {
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
+  const { logout } = useAuth()
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -60,6 +62,14 @@ export default function Header() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem
+        onClick={async () => {
+          await logout()
+        }}
+        sx={{ fontSize: '14px' }}
+      >
+        Logout
+      </MenuItem>
     </Menu>
   )
 

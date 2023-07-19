@@ -2,18 +2,18 @@ import LogoGoogle from '@assets/images/logo-google.png'
 import LogoVMO from '@assets/images/logo-vmo.png'
 import { useAuth } from '@hooks/useAuth'
 import { Box, Button, Paper, Typography } from '@mui/material'
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google'
+import { useGoogleLogin } from '@react-oauth/google'
 import { FC } from 'react'
 import styles from './LoginForm.module.css'
+import { useTranslation } from 'react-i18next'
 
 const LoginForm: FC = () => {
+  const {t} = useTranslation()
   const { loginWithGoogle } = useAuth()
 
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse: any) => {
       const token = tokenResponse.access_token || ''
-      console.log(tokenResponse)
-
       await loginWithGoogle(token as string)
     }
   })
@@ -42,7 +42,7 @@ const LoginForm: FC = () => {
               className={styles['logo-google']}
             />
             <Typography variant='h5' color='initial'>
-              Đăng nhập với Google
+              {t('login.loginWithGoogle')}
             </Typography>
           </Button>
         </Box>
