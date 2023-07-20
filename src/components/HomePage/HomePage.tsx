@@ -68,8 +68,8 @@ const HomePage: React.FC = () => {
   ]
   return (
     <Box>
-      <Box sx={{ px: 6 }}>
-        <Box sx={{ py: 4, fontSize: 18 }} width={200}>
+      <Box sx={{ pl: 4 }}>
+        <Box sx={{ py: 8, fontSize: 18 }} width={200}>
           <FormControl
             fullWidth
             size='small'
@@ -108,12 +108,12 @@ const HomePage: React.FC = () => {
                   sx={{
                     position: 'relative',
                     overflow: 'hidden',
-                    borderRadius: '24px',
+                    borderRadius: '25px',
                     boxShadow:
                       hoveredItemId === course.id
                         ? '5px 5px 10px #888888'
                         : 'none',
-                    width: '399px',
+                    width: '340px',
                     height: '224px',
                     transition: 'box-shadow 0.2s ease-in-out'
                   }}

@@ -346,9 +346,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName, videoUrl }) => {
             variant='outlined'
             onClick={handleClickOpen('paper')}
             sx={{
-              position: 'fixed',
-              bottom: '66px',
-              right: '500px',
+              m: 2,
               zIndex: 2,
               backgroundColor: 'primary'
             }}
@@ -483,9 +481,7 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName, videoUrl }) => {
             variant='outlined'
             onClick={handleClickOpenNote('paper')}
             sx={{
-              position: 'fixed',
-              bottom: '66px',
-              right: '660px',
+              m: 2,
               zIndex: 2,
               backgroundColor: 'primary'
             }}
