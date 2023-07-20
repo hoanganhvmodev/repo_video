@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import TableDetail from '@common/TableDetail/TableDetail'
 import VideoList from '@components/VideoList/VideoList'
+import FormChapter from '@components/FormChapter/FormChapter'
 
 interface CourseDetail {
   CourseName: string
@@ -51,46 +52,54 @@ function a11yProps(index: number) {
 
 const CourseDetail: FC<TabPanelProps> = () => {
   const [value, setValue] = useState(0)
+  const [openForm, setOpenForm] = useState<boolean>(false)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
 
+  const handleShowFormChapter = () => {
+    setOpenForm(true)
+  }
+
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box
-        sx={{
-          borderBottom: 1,
-          borderColor: 'divider',
-          '& button:hover': {
-            backgroundColor: '#CCCCCC'
-          },
-          '& button:active': {
-            backgroundColor: '#FFC000',
-            color: 'white'
-          },
-          '& button.Mui-selected': {
-            backgroundColor: '#FFC000',
-            color: 'white'
-          }
-        }}
-      >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label='basic tabs example'
+    <>
+      <Box sx={{ width: '100%' }}>
+        <Box
+          sx={{
+            borderBottom: 1,
+            borderColor: 'divider',
+            '& button:hover': {
+              backgroundColor: '#CCCCCC'
+            },
+            '& button:active': {
+              backgroundColor: '#FFC000',
+              color: 'white'
+            },
+            '& button.Mui-selected': {
+              backgroundColor: '#FFC000',
+              color: 'white'
+            }
+          }}
         >
-          <Tab label='Danh sách nhóm video' {...a11yProps(0)} />
-          <Tab label='Chi tiết khóa học' {...a11yProps(1)} />
-        </Tabs>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label='basic tabs example'
+          >
+            <Tab label='Danh sách nhóm video' {...a11yProps(0)} />
+            <Tab label='Chi tiết khóa học' {...a11yProps(1)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          <VideoList handleShowFormChapter={handleShowFormChapter} />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <TableDetail />
+        </CustomTabPanel>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        <VideoList />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <TableDetail />
-      </CustomTabPanel>
-    </Box>
+      <FormChapter open={openForm} handleSetOpen={setOpenForm} />
+    </>
   )
 }
 

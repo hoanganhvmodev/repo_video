@@ -14,6 +14,8 @@ import { useTranslation } from 'react-i18next'
 import { FAKE_SERVER_LIST, FAKE_USER_LIST } from './listUserFake'
 
 interface FormVideoProps {
+  open: boolean
+  handleShowForm: any
   dataFormEdit?: Video
   action?: ActionForm
 }
@@ -29,12 +31,13 @@ const initDataForm = {
 }
 
 const FormVideo: FC<FormVideoProps> = ({
+  open,
+  handleShowForm,
   action = ACTION_FORM.CREATE,
   dataFormEdit
 }) => {
   const initDataFormState = dataFormEdit ? dataFormEdit : initDataForm
   const { t } = useTranslation()
-  const [openFormCreate, setOpenFormCreate] = useState<boolean>(true)
   const [openWarningClose, setOpenWarningClose] = useState<boolean>(false)
   const [openSelectSpeaker, setOpenSelectSpeaker] = useState<boolean>(false)
   const [openSelectServer, setOpenSelectServer] = useState<boolean>(false)
@@ -113,7 +116,7 @@ const FormVideo: FC<FormVideoProps> = ({
   const handleCloseDialog = (event: object, reason: string) => {
     if (reason && reason == 'backdropClick') return
     setOpenWarningClose(false)
-    setOpenFormCreate(false)
+    handleShowForm(false)
   }
 
   const handleCloseWarningClose = () => {
@@ -168,7 +171,7 @@ const FormVideo: FC<FormVideoProps> = ({
   return (
     <>
       <Dialog
-        open={openFormCreate}
+        open={open}
         PaperProps={{
           sx: {
             minWidth: '900px'

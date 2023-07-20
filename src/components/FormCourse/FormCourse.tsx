@@ -22,6 +22,8 @@ import { useController, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 interface FormCourseProps {
+  open: boolean
+  handleSetOpen: any
   action?: ActionForm
   dataFormEdit?: DataFormCourse
 }
@@ -38,13 +40,14 @@ const initDataForm = {
 
 const FormCourse: FC<FormCourseProps> = ({
   action = ACTION_FORM.CREATE,
-  dataFormEdit
+  dataFormEdit,
+  open,
+  handleSetOpen
 }) => {
   // *********** State ******************
   const initDataFormState = dataFormEdit ? dataFormEdit : initDataForm
 
   const { t } = useTranslation()
-  const [openForm, setOpenForm] = useState<boolean>(true)
   const [openWarningClose, setOpenWarningClose] = useState<boolean>(false)
   const { attachment, handleSelectFile, handleCloseSelectFile } =
     useUploadMedia()
@@ -98,7 +101,7 @@ const FormCourse: FC<FormCourseProps> = ({
   }
 
   const handleCloseFormCreate = () => {
-    setOpenForm(false)
+    handleSetOpen(false)
     setOpenWarningClose(false)
   }
 
@@ -138,7 +141,7 @@ const FormCourse: FC<FormCourseProps> = ({
   return (
     <>
       <Dialog
-        open={openForm}
+        open={open}
         PaperProps={{
           sx: {
             minWidth: '900px'

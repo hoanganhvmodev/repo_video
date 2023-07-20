@@ -3,6 +3,7 @@ import { ReactNode, useState } from 'react'
 import Box from '@mui/material/Box'
 
 import TableVideo from '@common/TableVideo/TableVideo'
+import { Button } from '@mui/material'
 
 // interface videoListsProps {
 //   id: string
@@ -54,7 +55,10 @@ const data = [
 
 const header = ['STT', 'Tên nhóm video']
 
-const VideoList: FC<{}> = () => {
+interface VideoListProps {
+  handleShowFormChapter: any
+}
+const VideoList: FC<VideoListProps> = ({ handleShowFormChapter }) => {
   return (
     <>
       <Box
@@ -75,7 +79,14 @@ const VideoList: FC<{}> = () => {
           <Box sx={{ fontWeight: 'bold', fontSize: '22px' }}>
             {'HTML cơ bản'}
           </Box>
-          <Box>Thêm video</Box>
+          <Button
+            variant='contained'
+            onClick={() => {
+              handleShowFormChapter()
+            }}
+          >
+            Thêm chương
+          </Button>
         </Box>
         <Box>
           <TableVideo

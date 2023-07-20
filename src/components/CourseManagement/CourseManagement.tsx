@@ -1,8 +1,9 @@
-import { FC } from 'react'
-import { ReactNode, useState } from 'react'
 import Box from '@mui/material/Box'
+import { FC, useState } from 'react'
 
 import TableVideo from '@common/TableVideo/TableVideo'
+import FormCourse from '@components/FormCourse/FormCourse'
+import { Button } from '@mui/material'
 
 // interface CourseMngProps {
 //   CourseName: string
@@ -138,6 +139,8 @@ const header = [
 ]
 
 const CourseManagement: FC<{}> = () => {
+  const [openForm, setOpenForm] = useState<boolean>(false)
+
   return (
     <>
       <Box
@@ -158,7 +161,9 @@ const CourseManagement: FC<{}> = () => {
           <Box sx={{ fontWeight: 'bold', fontSize: '22px' }}>
             {'HTML for PRO'}
           </Box>
-          <Box>Thêm khóa học</Box>
+          <Button variant='contained' onClick={() => setOpenForm(true)}>
+            Thêm khóa học
+          </Button>
         </Box>
         <Box>
           <TableVideo
@@ -168,6 +173,7 @@ const CourseManagement: FC<{}> = () => {
           />
         </Box>
       </Box>
+      <FormCourse open={openForm} handleSetOpen={setOpenForm} />
     </>
   )
 }
