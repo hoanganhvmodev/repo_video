@@ -2,20 +2,23 @@ import CloseIcon from '@mui/icons-material/Close'
 import ImageIcon from '@mui/icons-material/Image'
 import { Box, Button, InputLabel } from '@mui/material'
 import { ChangeEvent, FC, useRef } from 'react'
-interface CUploadImageProps {
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary'
+interface CUploadMediaProps {
   label: string
   error: any
   sxContainer?: object
   attachment: any
+  type?: 'image' | 'video'
   handleSelectFile?: (e: ChangeEvent<HTMLInputElement>) => any
   handleCloseSelectFile?: () => any
 }
 
-const CUploadImage: FC<CUploadImageProps> = ({
+const CUploadMedia: FC<CUploadMediaProps> = ({
   label,
   error,
   sxContainer,
   attachment,
+  type = 'image',
   handleSelectFile,
   handleCloseSelectFile
 }) => {
@@ -46,7 +49,12 @@ const CUploadImage: FC<CUploadImageProps> = ({
           alignItems: 'center'
         }}
       >
-        <ImageIcon fontSize={'large'} sx={{ color: '#CCC' }} />
+        {type === 'image' ? (
+          <ImageIcon fontSize={'large'} sx={{ color: '#CCC' }} />
+        ) : (
+          <VideoLibraryIcon fontSize={'large'} sx={{ color: '#CCC' }} />
+        )}
+
         <InputLabel>{label}</InputLabel>
       </Box>
       <Button
@@ -61,7 +69,7 @@ const CUploadImage: FC<CUploadImageProps> = ({
         <input
           ref={ref}
           type='file'
-          accept='.png, .jpg, .jpeg'
+          accept={type === 'image' ? '.png, .jpg, .jpeg' : '.mp4, .mkv'}
           hidden
           onChange={handleSelectFile}
         />
@@ -76,17 +84,31 @@ const CUploadImage: FC<CUploadImageProps> = ({
         borderRadius: '12px'
       }}
     >
-      <img
-        src={attachment?.url}
-        alt='thumbnail'
-        style={{
-          width: '100%',
-          height: '100%',
-          borderRadius: '12px',
-          objectFit: 'cover',
-          objectPosition: 'center'
-        }}
-      />
+      {type === 'image' ? (
+        <img
+          src={attachment?.url}
+          alt='thumbnail'
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: '12px',
+            objectFit: 'cover',
+            objectPosition: 'center'
+          }}
+        />
+      ) : (
+        <video
+          src={attachment?.url}
+          controls
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: '12px',
+            objectFit: 'cover',
+            objectPosition: 'center'
+          }}
+        />
+      )}
       <Button
         sx={{
           position: 'absolute',
@@ -110,4 +132,4 @@ const CUploadImage: FC<CUploadImageProps> = ({
   )
 }
 
-export default CUploadImage
+export default CUploadMedia
