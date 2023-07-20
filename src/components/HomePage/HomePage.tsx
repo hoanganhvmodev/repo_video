@@ -5,6 +5,7 @@ import {
   FormControl,
   Grid,
   InputLabel,
+  Link,
   MenuItem,
   Select,
   Typography
@@ -151,23 +152,25 @@ const HomePage: React.FC = () => {
                         cursor: 'pointer'
                       }}
                     >
-                      <Button
-                        variant='contained'
-                        color='secondary'
-                        sx={{
-                          backgroundColor: 'white',
-                          boxShadow: 1,
-                          color: 'black',
-                          borderRadius: 40,
-                          fontSize: '1rem',
-                          lineHeight: '1.1',
-                          px: 3,
-                          py: 1,
-                          zIndex: 1
-                        }}
-                      >
-                        Xem ngay
-                      </Button>
+                      <Link href='/study'>
+                        <Button
+                          variant='contained'
+                          color='secondary'
+                          sx={{
+                            backgroundColor: 'white',
+                            boxShadow: 1,
+                            color: 'black',
+                            borderRadius: 40,
+                            fontSize: '1rem',
+                            lineHeight: '1.1',
+                            px: 3,
+                            py: 1,
+                            zIndex: 1
+                          }}
+                        >
+                          Xem ngay
+                        </Button>
+                      </Link>
                     </Box>
                   </Fade>
                 </Box>
