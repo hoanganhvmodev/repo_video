@@ -20,6 +20,7 @@
     "@mui/material": "^5.13.7",
     "@react-oauth/google": "^0.11.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "dayjs": "^1.11.9",
     "downshift": "3.2.10",
     "i18next": "^23.2.10",
     "mui-image": "^1.0.7",
