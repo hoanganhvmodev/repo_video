@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton'
 import { useState, useMemo } from 'react'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
+import { useNavigate } from 'react-router-dom'
 
 interface DataTable {
   id: number
@@ -27,6 +28,7 @@ interface DataTable {
 interface Props {
   dataTable: DataTable[]
   headerTitle: string[]
+  path?: string
 }
 
 // use example
@@ -39,8 +41,13 @@ interface Props {
 */
 }
 
-const TableVideo: React.FC<Props> = ({ dataTable, headerTitle }) => {
+const TableVideo: React.FC<Props> = ({ dataTable, headerTitle, path }) => {
   const [rowTable, setRowTable] = useState(dataTable)
+  const navigate = useNavigate()
+
+  const handleRedirectRouter = () => {
+    navigate(path)
+  }
 
   const handleDeleteRowTable = (index: number) => {
     const rowsTable = [...rowTable]
@@ -62,111 +69,89 @@ const TableVideo: React.FC<Props> = ({ dataTable, headerTitle }) => {
   }
 
   const countPage = useMemo(() => {
-    return Math.ceil(dataTable.length / 10)
+    return Math.ceil(dataTable.length / 6)
   }, [dataTable.length])
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label='simple table'>
-        <TableHead>
-          <TableRow>
-            {headerTitle.map((title, index) => (
-              <TableCell sx={{ fontWeight: 'bold' }} key={index}>
-                {title}
-              </TableCell>
-            ))}
-            <TableCell sx={{ fontWeight: 'bold' }}>Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rowTable.map((value, index) => (
-            <TableRow
-              key={index}
-              sx={{
-                '&:last-child td, &:last-child th': { border: 0 },
-                backgroundColor: 'white',
-                '&:hover': {
-                  backgroundColor: 'whitesmoke'
-                },
-                cursor: 'pointer'
-              }}
-            >
-              <TableCell component='th' scope='row'>
-                {value.id}
-              </TableCell>
-              <TableCell
-                align='left'
-                sx={{ display: value?.courseName ? '' : 'none' }}
-              >
-                {value?.courseName}
-              </TableCell>
-              <TableCell
-                align='left'
-                sx={{ display: value?.videoGroupName ? '' : 'none' }}
-              >
-                {value?.videoGroupName}
-              </TableCell>
-              <TableCell
-                align='left'
-                sx={{ display: value?.videoName ? '' : 'none' }}
-              >
-                {value?.videoName}
-              </TableCell>
-              <TableCell
-                align='left'
-                sx={{ display: value?.speaker ? '' : 'none' }}
-              >
-                {value?.speaker}
-              </TableCell>
-              <TableCell
-                align='left'
-                sx={{ display: value?.description ? '' : 'none' }}
-              >
-                {value?.description}
-              </TableCell>
-              <TableCell
-                align='left'
-                sx={{ display: value?.view ? '' : 'none' }}
-              >
-                {value?.view}
-              </TableCell>
-              <TableCell
-                align='left'
-                sx={{ display: value?.comment ? '' : 'none' }}
-              >
-                {value?.comment}
-              </TableCell>
-              <TableCell align='left'>
-                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                  <IconButton
-                    sx={{ mr: '8px' }}
-                    onClick={() => handleEditRowTable(index, value)}
-                  >
-                    <BorderColorRoundedIcon
-                      sx={{ fontSize: '24px', color: '#67B1F5' }}
-                    />
-                  </IconButton>
-                  <IconButton onClick={() => handleDeleteRowTable(index)}>
-                    <DeleteForeverRoundedIcon
-                      sx={{ fontSize: '24px', color: '#FD7373' }}
-                    />
-                  </IconButton>
-                </Box>
-              </TableCell>
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer
+        component={Paper}
+        sx={{
+          maxHeight: 640,
+          '&::-webkit-scrollbar': {
+            width: '0.4em'
+          },
+          '&::-webkit-scrollbar-track': {
+            boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+            webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0,0,0,.1)',
+            outline: '1px solid slategrey'
+          }
+        }}
+      >
+        <Table sx={{ minWidth: 650 }} stickyHeader aria-label='simple table'>
+          <TableHead>
+            <TableRow>
+              {headerTitle.map((title, index) => (
+                <TableCell sx={{ fontWeight: 'bold' }} key={index}>
+                  {title}
+                </TableCell>
+              ))}
+              <TableCell sx={{ fontWeight: 'bold' }}>Action</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Box sx={{ display: 'flex', justifyContent: 'end', p: '12px' }}>
-        <Stack spacing={2}>
-          <Pagination
-            count={countPage}
-            shape='rounded'
-            onChange={(e, page) => handleChangePage(e, page)}
-          />
-        </Stack>
-      </Box>
-    </TableContainer>
+          </TableHead>
+          <TableBody onClick={() => handleRedirectRouter()}>
+            {rowTable.map((value: any, index) => (
+              <TableRow
+                key={index}
+                sx={{
+                  '&:last-child td, &:last-child th': { border: 0 },
+                  backgroundColor: 'white',
+                  '&:hover': {
+                    backgroundColor: 'whitesmoke'
+                  },
+                  cursor: 'pointer'
+                }}
+              >
+                {Object.keys(value).map((key: any) => {
+                  return <TableCell align='left'>{value[key]}</TableCell>
+                })}
+                <TableCell align='left'>
+                  <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                    <IconButton
+                      sx={{ mr: '8px' }}
+                      onClick={(e) => {
+                        e.stopPropagation(), handleEditRowTable(index, value)
+                      }}
+                    >
+                      <BorderColorRoundedIcon
+                        sx={{ fontSize: '24px', color: '#67B1F5' }}
+                      />
+                    </IconButton>
+                    <IconButton onClick={() => handleDeleteRowTable(index)}>
+                      <DeleteForeverRoundedIcon
+                        sx={{ fontSize: '24px', color: '#FD7373' }}
+                      />
+                    </IconButton>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <Box sx={{ display: 'flex', justifyContent: 'end', p: '12px' }}>
+          <Stack spacing={2}>
+            <Pagination
+              count={countPage}
+              shape='rounded'
+              onChange={(e, page) => handleChangePage(e, page)}
+            />
+          </Stack>
+        </Box>
+      </TableContainer>
+    </Paper>
   )
 }
 

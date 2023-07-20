@@ -56,11 +56,11 @@ export const theme = createTheme({
         root: {
           textTransform: 'none',
           '&.MuiButton-containedPrimary': {
-            color: '#ffffff', 
+            color: '#ffffff'
           },
           '&.MuiButton-containedPrimary:hover': {
-            backgroundColor: '#ffb44e', 
-          },
+            backgroundColor: '#ffb44e'
+          }
         }
       }
     },

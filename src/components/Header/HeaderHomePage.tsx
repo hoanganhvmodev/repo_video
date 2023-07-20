@@ -1,5 +1,6 @@
+import { FC } from 'react'
 import { useState } from 'react'
-import { styled, alpha } from '@mui/material/styles'
+import { alpha } from '@mui/material/styles'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -19,7 +20,11 @@ import { Link } from '@mui/material'
 import { logout } from '@redux/slices/auth/authSlice'
 import { useAuth } from '@hooks/useAuth'
 
-export default function Header() {
+interface Header {
+  disableSearch?: boolean
+}
+
+const Header: FC<Header> = ({ disableSearch }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null)
@@ -127,7 +132,7 @@ export default function Header() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
-        position='static'
+        position='sticky'
         sx={{ bgcolor: 'whitesmoke', paddingX: '48px' }}
       >
         <Toolbar sx={{ px: 12 }}>
@@ -151,7 +156,8 @@ export default function Header() {
               width: {
                 md: '100%',
                 sm: 'auto'
-              }
+              },
+              display: disableSearch ? 'none' : ''
             }}
           >
             <Box
@@ -242,3 +248,5 @@ export default function Header() {
     </Box>
   )
 }
+
+export default Header

@@ -40,7 +40,7 @@ const CForm: FC<CFormProps> = ({
           {title}
         </Typography>
         {inputArea}
-        <Box sx={{marginTop: 3}}>
+        <Box sx={{ marginTop: 3 }}>
           <Box sx={{ display: 'flex', justifyContent: actionPosition, gap: 2 }}>
             {actionArea}
           </Box>
