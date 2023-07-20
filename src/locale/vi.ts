@@ -42,6 +42,14 @@ const translation = {
     warningCloseTitle: 'Bạn có muốn đóng biểu mẫu tạo chương không ?',
     warningCloseDesc:
       'Toàn bộ dữ liệu đang nhập sẽ không được lưu nếu đóng biểu mẫu tạo chương'
+  },
+  formVideo: {
+    titleCreate: 'Thêm video',
+    titleEdit: 'Sửa video',
+    nameLabel: 'Nhập tên video',
+    descLabel: 'Nhập mô tả',
+    speakerLabel: 'Chọn speaker',
+    serverLabel: 'Chọn server',
   }
 }
 
