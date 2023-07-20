@@ -3,6 +3,8 @@ import { ReactNode, useState } from 'react'
 import Box from '@mui/material/Box'
 
 import TableVideo from '@common/TableVideo/TableVideo'
+import FormVideo from '../FormVideo/FormVideo'
+import { Button } from '@mui/material'
 
 // interface videoListsProps {
 //   id: string
@@ -75,6 +77,8 @@ const data = [
 const header = ['STT', 'Tên nhóm video', 'Số lượt xem', 'Số bình luận']
 
 const ChapterVideo: FC<{}> = () => {
+  const [openFormCreate, setOpenFormCreate] = useState<boolean>(false)
+
   return (
     <>
       <Box
@@ -95,12 +99,20 @@ const ChapterVideo: FC<{}> = () => {
           <Box sx={{ fontWeight: 'bold', fontSize: '22px' }}>
             {'HTML cơ bản'}
           </Box>
-          <Box>Thêm nhóm video</Box>
+          <Button
+            variant='contained'
+            onClick={() => {
+              setOpenFormCreate(true)
+            }}
+          >
+            Thêm Video
+          </Button>
         </Box>
         <Box>
           <TableVideo headerTitle={header} dataTable={data} />
         </Box>
       </Box>
+      <FormVideo open={openFormCreate} handleShowForm={setOpenFormCreate} />
     </>
   )
 }

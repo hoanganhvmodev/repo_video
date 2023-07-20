@@ -9,6 +9,8 @@ import { Chapter } from '@type/Chapter'
 import CPopup from '@components/CPopup/CPopup'
 
 interface FormChapterProps {
+  open: boolean
+  handleSetOpen: any
   dataFormEdit?: Chapter
   action?: ActionForm
 }
@@ -21,13 +23,14 @@ const initDataForm = {
 }
 
 const FormChapter: FC<FormChapterProps> = ({
+  open,
+  handleSetOpen,
   action = ACTION_FORM.CREATE,
   dataFormEdit
 }) => {
   // *********** State ******************
   const initDataFormState = dataFormEdit ? dataFormEdit : initDataForm
   const { t } = useTranslation()
-  const [openForm, setOpenForm] = useState<boolean>(true)
   const [openWarningClose, setOpenWarningClose] = useState<boolean>(false)
 
   const {
@@ -61,7 +64,7 @@ const FormChapter: FC<FormChapterProps> = ({
   }
 
   const handleCloseFormCreate = () => {
-    setOpenForm(false)
+    handleSetOpen(false)
     setOpenWarningClose(false)
   }
 
@@ -72,7 +75,7 @@ const FormChapter: FC<FormChapterProps> = ({
   return (
     <>
       <Dialog
-        open={openForm}
+        open={open}
         PaperProps={{
           sx: {
             minWidth: '700px'

@@ -1,6 +1,3 @@
-import FormChapter from '@components/FormChapter/FormChapter'
-import FormCourse from '@components/FormCourse/FormCourse'
-import FormVideo from '@components/FormVideo/FormVideo'
 import AdminLayout from '@layouts/AdminLayout'
 import LoginPage from '@pages/login'
 import StudyPage from '@pages/study'
@@ -9,7 +6,6 @@ import HomePage from '@components/HomePage/HomePage'
 import DefaultLayout from '@layouts/DefaultLayout'
 import Middleware from '@middleware/index'
 import StudyLayout from '@layouts/StudyLayout'
-import FormCreateCourse from '@components/FormCreateCourse/FormCreateCourse'
 import CourseManagement from '@components/CourseManagement/CourseManagement'
 import CourseDetail from '@components/CourseDetail/CourseDetail'
 import ChapterVideo from '@components/ChapterVideo/ChapterVideo'
@@ -79,7 +75,15 @@ const router = createBrowserRouter([
       // </Middleware>
     ),
     children: [
-      // { index: true, element: <h1>Dashboard</h1> },
+      {
+        index: true,
+        element: (
+          <>
+            {' '}
+            <h1>Dashboard</h1>
+          </>
+        )
+      },
       {
         path: '/admin/course',
         element: <CourseManagement />
@@ -92,21 +96,6 @@ const router = createBrowserRouter([
         // for test
         path: '/admin/course/chapter',
         element: <ChapterVideo />
-      },
-      {
-        // for test
-        path: '/admin/course/create',
-        element: <FormCourse />
-      },
-      {
-        // for test
-        path: '/admin/chapter/create',
-        element: <FormChapter />
-      },
-      {
-        // for test
-        path: '/admin/video/create',
-        element: <FormVideo />
       }
     ]
   }
