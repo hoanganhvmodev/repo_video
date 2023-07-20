@@ -9,6 +9,10 @@ import HomePage from '@components/HomePage/HomePage'
 import DefaultLayout from '@layouts/DefaultLayout'
 import Middleware from '@middleware/index'
 import StudyLayout from '@layouts/StudyLayout'
+import FormCreateCourse from '@components/FormCreateCourse/FormCreateCourse'
+import CourseManagement from '@components/CourseManagement/CourseManagement'
+import CourseDetail from '@components/CourseDetail/CourseDetail'
+import ChapterVideo from '@components/ChapterVideo/ChapterVideo'
 
 const router = createBrowserRouter([
   {
@@ -75,7 +79,20 @@ const router = createBrowserRouter([
       // </Middleware>
     ),
     children: [
-      { index: true, element: <h1>Dashboard</h1> },
+      // { index: true, element: <h1>Dashboard</h1> },
+      {
+        path: '/admin/course',
+        element: <CourseManagement />
+      },
+      {
+        path: '/admin/course/detail',
+        element: <CourseDetail />
+      },
+      {
+        // for test
+        path: '/admin/course/chapter',
+        element: <ChapterVideo />
+      },
       {
         // for test
         path: '/admin/course/create',
