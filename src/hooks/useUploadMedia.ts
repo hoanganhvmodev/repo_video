@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react'
 
-export const useUploadImage = () => {
+export const useUploadMedia = () => {
   const [attachment, setAttachment] = useState<any>(null)
 
   // Can custom additional handle in specific form
@@ -13,7 +13,6 @@ export const useUploadImage = () => {
     const fileSelected = e.target.files?.[0]
     if (fileSelected) {
       const url = URL.createObjectURL(fileSelected)
-      console.log(url)
       setAttachment({ ...fileSelected, url: url })
     }
   }

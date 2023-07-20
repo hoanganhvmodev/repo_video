@@ -50,6 +50,10 @@ const translation = {
     descLabel: 'Nhập mô tả',
     speakerLabel: 'Chọn speaker',
     serverLabel: 'Chọn server',
+    videoLabel: 'Tải lên video',
+    warningCloseTitle: 'Bạn có muốn đóng biểu mẫu tạo video không ?',
+    warningCloseDesc:
+      'Toàn bộ dữ liệu đang nhập sẽ không được lưu nếu đóng biểu mẫu tạo video'
   }
 }
 

@@ -1,7 +1,9 @@
 import CForm from '@components/CForm/CForm'
 import CLazySelect from '@components/CLazySelect/CLazySelect'
 import CPopup from '@components/CPopup/CPopup'
+import CUploadMedia from '@components/CUploadMedia/CUploadMedia'
 import { ACTION_FORM } from '@constants/common-form'
+import { useUploadMedia } from '@hooks/useUploadMedia'
 import { Box, Button, Dialog, TextField } from '@mui/material'
 import { ActionForm } from '@type/CommonForm'
 import { User } from '@type/User'
@@ -41,6 +43,8 @@ const FormVideo: FC<FormVideoProps> = ({
   const [keySearchSpeaker, setKeySearchSpeaker] = useState<string>('')
   const [loadingSelectSpeaker, setLoadingSelectSpeaker] =
     useState<boolean>(false)
+  const { attachment, handleSelectFile, handleCloseSelectFile } =
+    useUploadMedia()
   // const loadingSelectSpeaker = openSelectSpeaker && optionsSpeaker.length === 0
   const loadingSelectServer = openSelectServer && optionsServer.length === 0
 
@@ -108,7 +112,7 @@ const FormVideo: FC<FormVideoProps> = ({
   // *********** Methods ******************
   const handleCloseDialog = (event: object, reason: string) => {
     if (reason && reason == 'backdropClick') return
-    setOpenWarningClose(true)
+    setOpenWarningClose(false)
     setOpenFormCreate(false)
   }
 
@@ -151,7 +155,13 @@ const FormVideo: FC<FormVideoProps> = ({
     }
   }
 
+  const handleUploadVideo = () => {
+    console.log(attachment)
+    // TODO : return url video
+  }
+
   const handleSubmitForm = (data: Video) => {
+    handleUploadVideo()
     console.log(data)
   }
 
@@ -175,7 +185,30 @@ const FormVideo: FC<FormVideoProps> = ({
           // ============= Body Form ================
           inputArea={
             <Box sx={{ px: 1 }}>
+              <Box
+                sx={{
+                  width: '300px',
+                  height: '150px'
+                }}
+              >
+                <CUploadMedia
+                  label={t('formVideo.videoLabel')}
+                  attachment={attachment}
+                  handleSelectFile={handleSelectFile}
+                  handleCloseSelectFile={handleCloseSelectFile}
+                  error={{}}
+                  type='video'
+                  sxContainer={{
+                    height: '150px',
+                    width: '300px'
+                  }}
+                />
+              </Box>
+
               <TextField
+                sx={{
+                  mt: 3
+                }}
                 label={t('formVideo.nameLabel')}
                 variant='standard'
                 fullWidth
@@ -241,9 +274,6 @@ const FormVideo: FC<FormVideoProps> = ({
                       setOpenSelectServer(false)
                     }}
                     onChange={handleSelectServer}
-                    registerFormHook={register('id_server_provider', {
-                      required: t('validatedMessage.notEmpty')
-                    })}
                   ></CLazySelect>
                 </Box>
               </Box>
@@ -268,7 +298,7 @@ const FormVideo: FC<FormVideoProps> = ({
                 variant='outlined'
                 sx={{ minWidth: '120px' }}
                 onClick={() => {
-                  handleCloseDialog({}, 'button-close')
+                  setOpenWarningClose(true)
                 }}
               >
                 {t('commonForm.close')}
@@ -303,6 +333,9 @@ const FormVideo: FC<FormVideoProps> = ({
               variant='contained'
               color='primary'
               sx={{ color: '#FFF', ml: 2, width: '100px' }}
+              onClick={() => {
+                handleCloseDialog({}, 'btn-close')
+              }}
             >
               {t('commonForm.yes')}
             </Button>

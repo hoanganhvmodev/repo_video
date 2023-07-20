@@ -3,10 +3,10 @@ import CForm from '@components/CForm/CForm'
 import CInputTags from '@components/CInputTags/CInputTags'
 import CPopup from '@components/CPopup/CPopup'
 import CSelect from '@components/CSelect/CSelect'
-import CUploadImage from '@components/CUploadImage/CUploadImage'
+import CUploadMedia from '@components/CUploadMedia/CUploadMedia'
 import { ACTION_FORM } from '@constants/common-form'
 import { LEVEL_COURSE } from '@constants/course'
-import { useUploadImage } from '@hooks/useUploadImage'
+import { useUploadMedia } from '@hooks/useUploadMedia'
 import {
   Box,
   Button,
@@ -47,7 +47,7 @@ const FormCourse: FC<FormCourseProps> = ({
   const [openForm, setOpenForm] = useState<boolean>(true)
   const [openWarningClose, setOpenWarningClose] = useState<boolean>(false)
   const { attachment, handleSelectFile, handleCloseSelectFile } =
-    useUploadImage()
+    useUploadMedia()
   const {
     register,
     handleSubmit,
@@ -241,7 +241,7 @@ const FormCourse: FC<FormCourseProps> = ({
                 <Grid item xs={4}>
                   <Box sx={{ display: 'flex', justifyContent: 'end' }}>
                     {/* ================= INPUT THUMBNAIL ================= */}
-                    <CUploadImage
+                    <CUploadMedia
                       attachment={attachment}
                       label={t('createCourse.thumbLabel')}
                       handleSelectFile={handleSelectFile}
