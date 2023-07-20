@@ -63,16 +63,16 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: (
-      <Middleware
-        listMiddleware={[
-          {
-            name: 'AuthenMiddleware',
-            props: { needAuth: true }
-          }
-        ]}
-      >
-        <AdminLayout />
-      </Middleware>
+      // <Middleware
+      //   listMiddleware={[
+      //     {
+      //       name: 'AuthenMiddleware',
+      //       props: { needAuth: true }
+      //     }
+      //   ]}
+      // >
+      <AdminLayout />
+      // </Middleware>
     ),
     children: [
       { index: true, element: <h1>Dashboard</h1> },
