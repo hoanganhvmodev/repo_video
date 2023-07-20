@@ -121,7 +121,9 @@ export default function Header() {
       <AppBar position='static' sx={{ bgcolor: '#29303B', paddingX: '48px' }}>
         <Toolbar sx={{ px: 12 }}>
           <IconButton sx={{ mr: 4 }} color='inherit'>
-            <ArrowBackIosSharpIcon sx={{ color: 'white' }} />
+            <Link href='/'>
+              <ArrowBackIosSharpIcon sx={{ color: 'white' }} />
+            </Link>
           </IconButton>
           <Box sx={{ pr: 4 }}>
             <Link href='#' underline='none'>

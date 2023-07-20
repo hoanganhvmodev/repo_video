@@ -589,14 +589,16 @@ const VideoContent: React.FC<VideoContentPros> = ({ videoName, videoUrl }) => {
                             sx={{
                               backgroundColor: '#E9ECEE',
                               borderRadius: 4,
-                              p: 2,
-                              display: 'flex'
+                              p: 2
                             }}
                           >
                             <Box
                               sx={{
                                 fontSize: 16,
-                                p: 1
+                                p: 1,
+                                width: '100%',
+                                wordWrap: 'break-word',
+                                overflowWrap: 'break-word'
                               }}
                             >
                               {noteItem.content}
